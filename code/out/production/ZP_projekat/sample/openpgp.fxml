@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <children>
+            <TabPane fx:id="tabPane" layoutX="-2.0" layoutY="-3.0" prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab fx:id="tabKeyView" onSelectionChanged="#tabSelected" text="Pregled kljuceva">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="privateKeysTable" layoutX="50.0" layoutY="50.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                                <columns>
+                                  <TableColumn fx:id="privateKeysTableKeyIDCol" prefWidth="233.0" text="keyID" />
+                                  <TableColumn fx:id="privateKeysTableOwnerIDCol" prefWidth="233.0" text="OwnerID" />
+                                    <TableColumn fx:id="privateKeysTableTimestampCol" prefWidth="233.0" text="TimeStamp" />
+                                </columns>
+                              </TableView>
+                              <Separator layoutY="240.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="18.0" layoutY="10.0" text="Privatni kljucevi">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                              <Label layoutX="18.0" layoutY="245.0" text="Javni kljucevi">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                              <TableView fx:id="publicKeysTable" layoutX="50.0" layoutY="285.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                                 <columns>
+                                    <TableColumn fx:id="publicKeysTableKeyIDCol" prefWidth="233.0" text="keyID" />
+                                    <TableColumn fx:id="publicKeysTableOwnerIDCol" prefWidth="233.0" text="OwnerID" />
+                                    <TableColumn fx:id="publicKeysTableTimestampCol" prefWidth="233.0" text="TimeStamp" />
+                                 </columns>
+                              </TableView>
+                           </children></AnchorPane>
+                     </content>
+                  </Tab>
+                <Tab fx:id="tabKeyGeneration" onSelectionChanged="#tabSelected" text="Generisanje kljuca">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <GridPane layoutX="225.0" layoutY="75.0" prefHeight="250.0" prefWidth="350.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="224.8" minWidth="8.800016784667974" prefWidth="41.600012207031256" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.99998321533204" minWidth="0.0" prefWidth="183.19998779296876" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TextField fx:id="keyGenerationName" GridPane.columnIndex="1" />
+                                    <TextField fx:id="keyGenerationMail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="keyGenerationPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Ime :" />
+                                    <Label text="Sifra :" GridPane.rowIndex="2" />
+                                    <Label text="Mail :" GridPane.rowIndex="1" />
+                                    <Label text="Algoritam :" GridPane.rowIndex="3" />
+                                    <ChoiceBox fx:id="keyGenerationAlgorithms" prefHeight="26.0" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <Button fx:id="keyGenerationButton" layoutX="663.0" layoutY="396.0" mnemonicParsing="false" onAction="#generateKey" prefHeight="34.0" prefWidth="90.0" text="Generisi" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+                              <Label fx:id="keyGenerationMsg" alignment="CENTER" layoutX="300.0" layoutY="394.0" prefHeight="18.0" prefWidth="200.0" textAlignment="CENTER" AnchorPane.bottomAnchor="58.80000000000001" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="tabKeyDeletion" onSelectionChanged="#tabSelected" text="Brisanje kljuca">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <GridPane layoutX="225.0" layoutY="75.0" prefHeight="250.0" prefWidth="350.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.20001220703125" minWidth="10.0" prefWidth="134.40001220703124" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="215.99998779296874" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="ID kljuca :" />
+                                    <Label text="Sifra :" GridPane.rowIndex="1" />
+                                    <TextField fx:id="keyDeletionID" GridPane.columnIndex="1" />
+                                    <TextField fx:id="keyDeletionPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <Button fx:id="keyDeletionButton" layoutX="663.0" layoutY="396.0" mnemonicParsing="false" onAction="#deleteKey" prefHeight="34.0" prefWidth="90.0" text="Obrisi" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+                              <Label fx:id="keyDeletionMsg" alignment="CENTER" layoutX="300.0" layoutY="404.0" prefHeight="18.0" prefWidth="200.0" textAlignment="CENTER" AnchorPane.bottomAnchor="58.8" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab fx:id="tabImportExport" onSelectionChanged="#tabSelected" text="Uvoz/Izvoz">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Separator layoutX="400.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="anchorPaneImportKey" layoutX="2.0" layoutY="-2.0" prefHeight="473.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <GridPane AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Putanja:" />
+                                          <Label text="Tip kljuca:" GridPane.rowIndex="1" />
+                                          <Button fx:id="importKeyButton" mnemonicParsing="false" onAction="#importKey" prefHeight="26.0" prefWidth="65.0" text="Uvezi" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                          <RadioButton fx:id="publicKeyTypeImport" mnemonicParsing="false" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="importKeyType" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="privateKeyTypeImport" mnemonicParsing="false" text="Privatni" toggleGroup="$importKeyType" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Button fx:id="selectImportFileButton" mnemonicParsing="false" onAction="#selectImportFile" text="izaberi fajl" GridPane.columnIndex="1" />
+                                          <TextArea fx:id="importFilePath" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                    <Label fx:id="importKeyLabel" alignment="CENTER" layoutX="-1.0" layoutY="371.0" prefHeight="18.0" prefWidth="401.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="anchorPaneExportKey" layoutX="600.0" layoutY="271.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <GridPane AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label text="Putanja:" />
+                                          <Label text="Tip kljuca:" GridPane.rowIndex="1" />
+                                          <Button fx:id="exportKeyButton" mnemonicParsing="false" onAction="#exportKey" prefHeight="26.0" prefWidth="65.0" text="Izvezi" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                          <RadioButton fx:id="publicKeyTypeExport" mnemonicParsing="false" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="exportKeyType" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="privateKeyTypeExport" mnemonicParsing="false" text="Privatni" toggleGroup="$exportKeyType" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                          <Button fx:id="selectExportFileButton" mnemonicParsing="false" onAction="#selectExportFile" text="izaberi fajl" GridPane.columnIndex="1" />
+                                          <Label text="ID kljuca:" GridPane.rowIndex="2" />
+                                          <TextField fx:id="exportKeyID" prefHeight="26.0" prefWidth="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextArea fx:id="exportFilePath" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                    <Label fx:id="exportKeyLabel" alignment="CENTER" layoutX="-1.0" layoutY="371.0" prefHeight="18.0" prefWidth="401.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab fx:id="tabSendMsg" onSelectionChanged="#tabSelected" text="Slanje poruke">
+                    <content>
+                      <AnchorPane fx:id="anchorPaneSendMsg" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+                  <Tab fx:id="tabReceiveMsg" onSelectionChanged="#tabSelected" text="Prijem poruke">
+                    <content>
+                      <AnchorPane fx:id="anchorPaneReceiveMsg" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <GridPane layoutX="225.0" layoutY="75.0" prefHeight="250.0" prefWidth="350.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" text="Putanja do kriptovane poruke:" wrapText="true" />
+                                    <Label text="Putanja dekriptovane poruke:" wrapText="true" GridPane.rowIndex="1" />
+                                    <Button fx:id="selectInboxMessageButton" mnemonicParsing="false" onAction="#selectInboxMessage" text="poruka" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                    <TextArea fx:id="inboxMessagePath" editable="false" wrapText="true" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </GridPane.margin></TextArea>
+                                    <Button fx:id="selectDecryptedMessageButton" mnemonicParsing="false" onAction="#selectDecryptedMessage" text="lokacija" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                    <TextArea fx:id="decryptedMessagePath" editable="false" layoutX="244.0" layoutY="10.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </GridPane.margin></TextArea>
+                                 </children>
+                              </GridPane>
+                              <Button fx:id="receiveMessageButton" layoutX="666.0" layoutY="392.0" mnemonicParsing="false" onAction="#receiveMessage" prefHeight="34.0" prefWidth="90.0" text="Primi" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+                              <Label fx:id="encryptMessageMsg" alignment="CENTER" prefHeight="18.0" prefWidth="200.0" textAlignment="CENTER" AnchorPane.bottomAnchor="58.8" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
+                              <DialogPane fx:id="inboxDialog" layoutX="200.0" layoutY="57.0" minHeight="240.0" opacity="0.7" visible="false" AnchorPane.bottomAnchor="114.19999999999999" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="75.0">
+                                 <content>
+                                    <GridPane alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Sifra za privatni kljuc:" />
+                                          <TextField fx:id="inboxMessagePrivateKey" GridPane.columnIndex="1" />
+                                          <Label fx:id="inboxMessageInfos" alignment="CENTER" contentDisplay="CENTER" prefWidth="400.0" text="Informacije o prijemnoj poruci ce biti ispisane ovde blablablalbalblalbalbla......................." textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                          <Button fx:id="inboxMessageInsertPrivateKeyButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#checkInboxMessagePrivateKey" text="Dekriptuj" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                          <Button cancelButton="true" mnemonicParsing="false" onAction="#closeInboxDialog" text="Izadji" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                       </children>
+                                    </GridPane>
+                                 </content>
+                                 <header>
+                                    <Label text="Dekriptovanje prijemne poruke" />
+                                 </header>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </DialogPane>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
