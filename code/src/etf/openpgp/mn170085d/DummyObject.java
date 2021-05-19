@@ -1,4 +1,4 @@
-package sample;
+package etf.openpgp.mn170085d;
 
 import java.util.Date;
 

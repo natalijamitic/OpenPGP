@@ -1,28 +1,19 @@
-package sample;
+package etf.openpgp.mn170085d;
 
 import javafx.animation.PauseTransition;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.IntConsumer;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sample.DummyObject;
 
 public class Controller {
     final String[] generationAlgorithms = {"RSA 1024", "RSA 2048", "RSA 4096"};
