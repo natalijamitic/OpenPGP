@@ -14,8 +14,10 @@ public class Main extends Application {
         primaryStage.setTitle("Open PGP");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
-        primaryStage.setMaxHeight(650);
-        primaryStage.setMaxWidth(800);
+//        primaryStage.setMaxHeight(650);
+//        primaryStage.setMaxWidth(800);
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(650);
         primaryStage.setResizable(false);
     }
 
