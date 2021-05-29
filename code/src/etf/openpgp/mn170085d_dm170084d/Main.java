@@ -1,4 +1,4 @@
-package etf.openpgp.mn170085d;
+package etf.openpgp.mn170085d_dm170084d;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
