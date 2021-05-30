@@ -50,9 +50,13 @@ public class Controller {
 
     private boolean tabEntered = false;
 
+    private KeyGenerator keyGenerator;
+
     public void initialize() {
         // initialization here, if needed...
         System.out.println("init");
+
+        this.keyGenerator = new KeyGenerator();
 
         this.keyGenerationMsg.setText("Hello keyGen World :)");
         this.keyDeletionMsg.setText("Hello keyDel World :)");
@@ -69,7 +73,9 @@ public class Controller {
 
         // TODO: refresh selected tab (case 1,2,3...)
         switch (selectedTabIndex) {
-            case 0: viewKeys(); break;
+            case 0:
+                viewKeys();
+                break;
         }
     }
 
@@ -105,9 +111,16 @@ public class Controller {
         String password = this.keyGenerationPassword.getText();
         String algorithm =  this.keyGenerationAlgorithms.getValue(); // NULL if not selected
 
-        System.out.println("key Generation Button");
-        System.out.println(name + ' ' + mail + ' ' + password + ' ' + algorithm);
+        if (name.length() == 0 || mail.length() == 0 || password.length() == 0 || algorithm == null) {
+            this.keyGenerationMsg.setText("Sva polja su obavezna.");
+            return;
+        }
 
+        this.keyGenerator.generateRSAKey(name, mail, password, Integer.parseInt(algorithm.substring(4)));
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.keyGenerationMsg.setText("Uspesno generisan kljuc."));
+        delay.play();
     }
 
     public void deleteKey() {
