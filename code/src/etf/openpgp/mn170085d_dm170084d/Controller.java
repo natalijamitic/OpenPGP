@@ -1,5 +1,6 @@
 package etf.openpgp.mn170085d_dm170084d;
 
+import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,13 +51,13 @@ public class Controller {
 
     private boolean tabEntered = false;
 
-    private KeyGenerator keyGenerator;
+    private KeyHelper keyHelper;
 
     public void initialize() {
         // initialization here, if needed...
         System.out.println("init");
 
-        this.keyGenerator = new KeyGenerator();
+        this.keyHelper = new KeyHelper();
 
         this.keyGenerationMsg.setText("Hello keyGen World :)");
         this.keyDeletionMsg.setText("Hello keyDel World :)");
@@ -116,10 +117,10 @@ public class Controller {
             return;
         }
 
-        this.keyGenerator.generateRSAKey(name, mail, password, Integer.parseInt(algorithm.substring(4)));
+        boolean result = this.keyHelper.generateRSAKey(name, mail, password, algorithm);
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
-        delay.setOnFinished(event -> this.keyGenerationMsg.setText("Uspesno generisan kljuc."));
+        delay.setOnFinished(event -> this.keyGenerationMsg.setText(result ? "Uspesno generisan kljuc." : "Ups, doslo je do greske."));
         delay.play();
     }
 
