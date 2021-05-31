@@ -4,13 +4,11 @@ import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
-import java.util.Date;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -105,7 +103,6 @@ public class Controller {
         );
     }
 
-    // Dummy function how to (refresh) populate tables (in first tab)
     public void viewKeys() {
         initializeKeyViewer();
         if (keyHelper == null) {
