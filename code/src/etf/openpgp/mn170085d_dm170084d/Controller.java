@@ -1,8 +1,9 @@
 package etf.openpgp.mn170085d_dm170084d;
 
+import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
+import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -44,15 +45,21 @@ public class Controller {
     @FXML
     private TextArea importFilePath, exportFilePath, inboxMessagePath, decryptedMessagePath;
     @FXML
-    private AnchorPane anchorPaneImportKey, anchorPaneExportKey, anchorPaneReceiveMsg, anchorPaneSendMsg;
+    private AnchorPane anchorPaneImportKey, anchorPaneExportKey, anchorPaneReceiveMsg, anchorPaneSendMsg, keyGenerationAnchorPane;
     @FXML
     private DialogPane inboxDialog;
 
     private boolean tabEntered = false;
 
+    private KeyHelper keyHelper;
+
     public void initialize() {
         // initialization here, if needed...
         System.out.println("init");
+
+        if (keyHelper == null) {
+            this.keyHelper = new KeyHelper();
+        }
 
         this.keyGenerationMsg.setText("Hello keyGen World :)");
         this.keyDeletionMsg.setText("Hello keyDel World :)");
@@ -69,32 +76,46 @@ public class Controller {
 
         // TODO: refresh selected tab (case 1,2,3...)
         switch (selectedTabIndex) {
-            case 0: viewKeys(); break;
+            case 0:
+                viewKeys();
+                break;
+            case 3:
+                this.importKeyLabel.setText("");
+                this.exportKeyLabel.setText("");
         }
     }
 
-    // Dummy function how to (refresh) populate tables (in first tab)
-    public void viewKeys() {
-        ObservableList<DummyObject> data = FXCollections.observableArrayList(
-            new DummyObject(2512352, "br1"),
-            new DummyObject(2512352, "br2"),
-            new DummyObject(2512352, "br3"),
-            new DummyObject(2512352, "br4"),
-            new DummyObject(2512352, "br5"),
-            new DummyObject(2512352, "br6")
-        );
-
+    private void initializeKeyViewer() {
+        this.privateKeysTable.getSelectionModel().setCellSelectionEnabled(true);
+        this.publicKeysTable.getSelectionModel().setCellSelectionEnabled(true);
         this.privateKeysTableKeyIDCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("id")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("id")
         );
         this.privateKeysTableOwnerIDCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("owner")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("owner")
         );
         this.privateKeysTableTimestampCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("date")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("date")
         );
+        this.publicKeysTableKeyIDCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("id")
+        );
+        this.publicKeysTableOwnerIDCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("owner")
+        );
+        this.publicKeysTableTimestampCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("date")
+        );
+    }
 
-        this.privateKeysTable.setItems(data);
+    public void viewKeys() {
+        initializeKeyViewer();
+        if (keyHelper == null) {
+            this.keyHelper = new KeyHelper();
+        }
+
+        this.privateKeysTable.setItems(keyHelper.getPrivateKeys());
+        this.publicKeysTable.setItems(keyHelper.getPublicKeys());
     }
 
     public void generateKey() {
@@ -105,25 +126,38 @@ public class Controller {
         String password = this.keyGenerationPassword.getText();
         String algorithm =  this.keyGenerationAlgorithms.getValue(); // NULL if not selected
 
-        System.out.println("key Generation Button");
-        System.out.println(name + ' ' + mail + ' ' + password + ' ' + algorithm);
+        if (name.length() == 0 || mail.length() == 0 || password.length() == 0 || algorithm == null) {
+            this.keyGenerationMsg.setText("Sva polja su obavezna.");
+            return;
+        }
 
+        boolean result = this.keyHelper.generateRSAKey(name, mail, password, algorithm);
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.keyGenerationMsg.setText(result ? "Uspesno generisan kljuc." : "Ups, doslo je do greske."));
+        delay.play();
     }
 
     public void deleteKey() {
         this.keyDeletionMsg.setText("Brise se...");
 
         String id = this.keyDeletionID.getText();
-        String password = this.keyDeletionPassword.getText();
+        String password = this.keyDeletionPassword.getText().length() > 0 ? this.keyDeletionPassword.getText() : null;
 
-        System.out.println("key Generation Button");
-        System.out.println(id + ' ' + password);
+        if (id.length() == 0) {
+            this.keyDeletionMsg.setText("ID polje je obavezno.");
+            return;
+        }
+
+        try {
+            boolean result = keyHelper.deleteKey(this.stringKeyIdToLong(id), password);
+            this.keyDeletionMsg.setText(result ? "Kljuc uspesno obrisan." : "Kljuc nije obrisan.");
+        } catch(NumberFormatException e) {
+            this.keyDeletionMsg.setText("ID kljuca mora biti broj.");
+        }
     }
 
-    // FAJL PUTANJA
     public void selectImportFile() {
-        System.out.println("select import file");
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Izaberite fajl za uvoz");
         Stage stage = (Stage)anchorPaneImportKey.getScene().getWindow();
@@ -133,20 +167,29 @@ public class Controller {
             this.importFilePath.setText(file.getAbsolutePath());
         } else {
             System.out.println("Fajl je NULL");
+            this.importFilePath.setText("");
         }
     }
 
     public void importKey() {
-        System.out.println("import Key");
         this.importKeyLabel.setText("Uvozi se...");
 
         String filePath = this.importFilePath.getText();
         String keyType = ((RadioButton)importKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType);
+
+        if (filePath.length() == 0 || keyType.length() == 0) {
+            this.importKeyLabel.setText("Sva polja su obavezna.");
+        }
+        boolean result = keyType.equals("Privatni") ? this.keyHelper.importPrivateKey(filePath) : this.keyHelper.importPublicKey(filePath);
+        this.importKeyLabel.setText(result ? "Uspesan uvoz." : "Ups, doslo je do greske.");
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.importKeyLabel.setText(""));
+        delay.play();
     }
 
 
-    // DIREKTORIJUM PUTANJA
     public void selectExportFile() {
         System.out.println("select export file");
 
@@ -157,21 +200,29 @@ public class Controller {
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             this.exportFilePath.setText(file.getAbsolutePath());
-            // this.exportFilePath.setWrapText(true);
         } else {
             System.out.println("Fajl je NULL");
+            this.exportFilePath.setText("");
         }
     }
 
     public void exportKey() {
-        System.out.println("export Key");
         this.exportKeyLabel.setText("Izvozi se..");
 
         String keyId = this.exportKeyID.getText();
         String filePath = this.exportFilePath.getText();
         String keyType = ((RadioButton)exportKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType + " " + keyId);
+        if (keyId.length() == 0 || filePath.length() == 0 || keyType.length() == 0) {
+            this.exportKeyLabel.setText("Sva polja su obavezna.");
+        }
 
+        boolean result = keyType.equals("Privatni") ? this.keyHelper.exportPrivateKey(filePath, this.stringKeyIdToLong(keyId)) : this.keyHelper.exportPublicKey(filePath, this.stringKeyIdToLong(keyId));
+        this.exportKeyLabel.setText(result ? "Uspesan izvoz." : "Ups, doslo je do greske.");
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.exportKeyLabel.setText(""));
+        delay.play();
     }
 
     public void selectInboxMessage() {
@@ -227,5 +278,18 @@ public class Controller {
 
     public void closeInboxDialog() {
         this.inboxDialog.setVisible(false);
+    }
+
+
+    private long stringKeyIdToLong(String keyId) {
+        return Long.parseUnsignedLong(keyId, 16);
+    }
+
+    public void initializeApp(){
+        TableUtils.installCopyPasteHandler(this.privateKeysTable);
+        TableUtils.installCopyPasteHandler(this.publicKeysTable);
+
+        TableUtils.installContextMenu(this.privateKeysTable);
+        TableUtils.installContextMenu(this.publicKeysTable);
     }
 }

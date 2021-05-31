@@ -10,7 +10,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("openpgp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("openpgp.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Open PGP");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
@@ -19,6 +20,9 @@ public class Main extends Application {
         primaryStage.setWidth(800);
         primaryStage.setHeight(650);
         primaryStage.setResizable(false);
+
+        Controller controller = (Controller)(loader.getController());
+        controller.initializeApp();
     }
 
 

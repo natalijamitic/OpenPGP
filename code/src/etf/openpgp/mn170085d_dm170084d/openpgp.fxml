@@ -54,7 +54,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="etf.openpgp.mn170085d_dm170084d.Controller">
+<VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="etf.openpgp.mn170085d_dm170084d.Controller">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
@@ -62,9 +62,9 @@
               <tabs>
                   <Tab fx:id="tabKeyView" onSelectionChanged="#tabSelected" text="Pregled kljuceva">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane fx:id="keyGenerationAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="privateKeysTable" layoutX="50.0" layoutY="50.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                              <TableView fx:id="privateKeysTable" editable="true" layoutX="50.0" layoutY="50.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                                 <columns>
                                   <TableColumn fx:id="privateKeysTableKeyIDCol" prefWidth="233.0" text="keyID" />
                                   <TableColumn fx:id="privateKeysTableOwnerIDCol" prefWidth="233.0" text="OwnerID" />
@@ -163,13 +163,14 @@
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <Label text="Putanja:" />
                                           <Label text="Tip kljuca:" GridPane.rowIndex="1" />
-                                          <Button fx:id="importKeyButton" mnemonicParsing="false" onAction="#importKey" prefHeight="26.0" prefWidth="65.0" text="Uvezi" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <RadioButton fx:id="publicKeyTypeImport" mnemonicParsing="false" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <Button fx:id="importKeyButton" mnemonicParsing="false" onAction="#importKey" prefHeight="26.0" prefWidth="65.0" text="Uvezi" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                          <RadioButton fx:id="publicKeyTypeImport" mnemonicParsing="false" selected="true" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="importKeyType" />
                                              </toggleGroup>
@@ -180,6 +181,11 @@
                                        </children>
                                     </GridPane>
                                     <Label fx:id="importKeyLabel" alignment="CENTER" layoutX="-1.0" layoutY="371.0" prefHeight="18.0" prefWidth="401.0" />
+                                    <Label layoutX="170.0" layoutY="35.0" text="Uvoz kljuca">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="anchorPaneExportKey" layoutX="600.0" layoutY="271.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -200,7 +206,7 @@
                                           <Label text="Putanja:" />
                                           <Label text="Tip kljuca:" GridPane.rowIndex="1" />
                                           <Button fx:id="exportKeyButton" mnemonicParsing="false" onAction="#exportKey" prefHeight="26.0" prefWidth="65.0" text="Izvezi" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                          <RadioButton fx:id="publicKeyTypeExport" mnemonicParsing="false" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <RadioButton fx:id="publicKeyTypeExport" mnemonicParsing="false" selected="true" text="Javni" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="exportKeyType" />
                                              </toggleGroup>
@@ -213,6 +219,11 @@
                                        </children>
                                     </GridPane>
                                     <Label fx:id="exportKeyLabel" alignment="CENTER" layoutX="-1.0" layoutY="371.0" prefHeight="18.0" prefWidth="401.0" />
+                                    <Label layoutX="170.0" layoutY="35.0" text="Izvoz kljuca">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
