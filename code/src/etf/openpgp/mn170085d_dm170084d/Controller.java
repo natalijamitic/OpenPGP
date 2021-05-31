@@ -112,7 +112,7 @@ public class Controller {
         }
 
         this.privateKeysTable.setItems(keyHelper.getPrivateKeys());
-        this.publicKeysTable.setItems(keyHelper.getPrivateKeys());
+        this.publicKeysTable.setItems(keyHelper.getPublicKeys());
     }
 
     public void generateKey() {
@@ -136,26 +136,25 @@ public class Controller {
     }
 
     public void deleteKey() {
-        //TODO: Option for deleting public keys???
-
         this.keyDeletionMsg.setText("Brise se...");
 
         String id = this.keyDeletionID.getText();
-        String password = this.keyDeletionPassword.getText();
+        String password = this.keyDeletionPassword.getText().length() > 0 ? this.keyDeletionPassword.getText() : null;
 
-        if (id.length() == 0 || password.length() == 0) {
-            this.keyDeletionMsg.setText("Sva polja su obavezna.");
+        if (id.length() == 0) {
+            this.keyDeletionMsg.setText("ID polje je obavezno.");
             return;
         }
 
-        boolean result = keyHelper.deleteKey(Long.parseUnsignedLong(id, 16), password);
-        this.keyDeletionMsg.setText(result ? "Kljuc uspesno obrisan." : "Kljuc nije obrisan.");
+        try {
+            boolean result = keyHelper.deleteKey(this.stringKeyIdToLong(id), password);
+            this.keyDeletionMsg.setText(result ? "Kljuc uspesno obrisan." : "Kljuc nije obrisan.");
+        } catch(NumberFormatException e) {
+            this.keyDeletionMsg.setText("ID kljuca mora biti broj.");
+        }
     }
 
-    // FAJL PUTANJA
     public void selectImportFile() {
-        System.out.println("select import file");
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Izaberite fajl za uvoz");
         Stage stage = (Stage)anchorPaneImportKey.getScene().getWindow();
@@ -165,20 +164,25 @@ public class Controller {
             this.importFilePath.setText(file.getAbsolutePath());
         } else {
             System.out.println("Fajl je NULL");
+            this.importFilePath.setText("");
         }
     }
 
     public void importKey() {
-        System.out.println("import Key");
         this.importKeyLabel.setText("Uvozi se...");
 
         String filePath = this.importFilePath.getText();
         String keyType = ((RadioButton)importKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType);
+
+        if (filePath.length() == 0 || keyType.length() == 0) {
+            this.importKeyLabel.setText("Sva polja su obavezna.");
+        }
+        boolean result = keyType.equals("Privatni") ? this.keyHelper.importPrivateKey(filePath) : this.keyHelper.importPublicKey(filePath);
+        this.importKeyLabel.setText(result ? "Uspesan uvoz." : "Ups, doslo je do greske.");
     }
 
 
-    // DIREKTORIJUM PUTANJA
     public void selectExportFile() {
         System.out.println("select export file");
 
@@ -189,21 +193,25 @@ public class Controller {
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             this.exportFilePath.setText(file.getAbsolutePath());
-            // this.exportFilePath.setWrapText(true);
         } else {
             System.out.println("Fajl je NULL");
+            this.exportFilePath.setText("");
         }
     }
 
     public void exportKey() {
-        System.out.println("export Key");
         this.exportKeyLabel.setText("Izvozi se..");
 
         String keyId = this.exportKeyID.getText();
         String filePath = this.exportFilePath.getText();
         String keyType = ((RadioButton)exportKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType + " " + keyId);
+        if (keyId.length() == 0 || filePath.length() == 0 || keyType.length() == 0) {
+            this.exportKeyLabel.setText("Sva polja su obavezna.");
+        }
 
+        boolean result = keyType.equals("Privatni") ? this.keyHelper.exportPrivateKey(filePath, this.stringKeyIdToLong(keyId)) : this.keyHelper.exportPublicKey(filePath, this.stringKeyIdToLong(keyId));
+        this.exportKeyLabel.setText(result ? "Uspesan izvoz." : "Ups, doslo je do greske.");
     }
 
     public void selectInboxMessage() {
@@ -261,6 +269,10 @@ public class Controller {
         this.inboxDialog.setVisible(false);
     }
 
+
+    private long stringKeyIdToLong(String keyId) {
+        return Long.parseUnsignedLong(keyId, 16);
+    }
 
     public void initializeApp(){
         TableUtils.installCopyPasteHandler(this.privateKeysTable);

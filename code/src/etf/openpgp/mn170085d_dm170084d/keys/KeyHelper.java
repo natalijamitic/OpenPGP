@@ -1,5 +1,6 @@
 package etf.openpgp.mn170085d_dm170084d.keys;
 
+import etf.openpgp.mn170085d_dm170084d.Globals;
 import javafx.collections.ObservableList;
 import org.bouncycastle.openpgp.*;
 
@@ -26,8 +27,28 @@ public class KeyHelper {
         return this.keyReaderWriter.getPrivateKeys();
     }
 
+    public ObservableList<KeyGuiVisualisation> getPublicKeys() {
+        return this.keyReaderWriter.getPublicKeys();
+    }
+
     public boolean deleteKey(long id, String password) {
         return this.keyReaderWriter.deleteKey(id, password);
+    }
+
+    public boolean exportPrivateKey(String filePath, long id) {
+        return this.keyReaderWriter.exportPrivateKey(filePath, id, null);
+    }
+
+    public boolean exportPublicKey(String filePath, long id) {
+        return this.keyReaderWriter.exportPublicKey(filePath, id);
+    }
+
+    public boolean importPrivateKey(String filePath) {
+        return this.keyReaderWriter.importPrivateKey(filePath);
+    }
+
+    public boolean importPublicKey(String filePath) {
+        return this.keyReaderWriter.importPublicKey(filePath);
     }
 
 //    public ObservableList<KeyGuiVisualisation> getPublicKeys() {
