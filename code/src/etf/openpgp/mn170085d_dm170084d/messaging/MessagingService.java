@@ -1,4 +1,4 @@
-package etf.openpgp.mn170085d_dm170084d;
+package etf.openpgp.mn170085d_dm170084d.messaging;
 
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.*;
