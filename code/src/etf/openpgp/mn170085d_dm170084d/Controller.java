@@ -4,6 +4,7 @@ import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +19,7 @@ import javafx.util.Duration;
 
 public class Controller {
     final String[] generationAlgorithms = {"RSA 1024", "RSA 2048", "RSA 4096"};
+    final String[] simetricAlgorithms = {"3DES + EDE", "AES 128"};
 
     @FXML
     private TabPane tabPane;
@@ -28,26 +30,29 @@ public class Controller {
     @FXML
     private TextField keyDeletionID, keyDeletionPassword;
     @FXML
-    private ChoiceBox<String> keyGenerationAlgorithms;
+    private ChoiceBox<String> keyGenerationAlgorithms, outboxEncryptonAlgorithms;
+    @FXML
+    private ListView<KeyGuiVisualisation> outboxPublicKeys;
     @FXML
     private Label keyGenerationMsg, keyDeletionMsg;
     @FXML
     private TableView privateKeysTable, publicKeysTable;
     @FXML
     private TableColumn privateKeysTableKeyIDCol, privateKeysTableOwnerIDCol, privateKeysTableTimestampCol, publicKeysTableKeyIDCol, publicKeysTableOwnerIDCol, publicKeysTableTimestampCol;
-
     @FXML
     private ToggleGroup importKeyType, exportKeyType;
     @FXML
-    private TextField exportKeyID, inboxMessagePrivateKey;
+    private TextField exportKeyID, inboxMessagePrivateKey, signatureKeyId, signatureKeyPass;
     @FXML
-    private Label importKeyLabel, exportKeyLabel, encryptMessageMsg, inboxMessageInfos;
+    private Label importKeyLabel, exportKeyLabel, encryptMessageMsg, inboxMessageInfos, outboxLabel;
     @FXML
-    private TextArea importFilePath, exportFilePath, inboxMessagePath, decryptedMessagePath;
+    private TextArea importFilePath, exportFilePath, inboxMessagePath, decryptedMessagePath, outboxMessagePath, outboxLocationPath;
     @FXML
     private AnchorPane anchorPaneImportKey, anchorPaneExportKey, anchorPaneReceiveMsg, anchorPaneSendMsg, keyGenerationAnchorPane;
     @FXML
     private DialogPane inboxDialog;
+    @FXML
+    private CheckBox signatureFlag, encryptonFlag, zipFlag, radixFlag;
 
     private boolean tabEntered = false;
 
@@ -60,6 +65,11 @@ public class Controller {
         if (keyHelper == null) {
             this.keyHelper = new KeyHelper();
         }
+
+        this.outboxEncryptonAlgorithms.setItems(FXCollections.observableArrayList(simetricAlgorithms));
+
+        this.outboxPublicKeys.setItems(keyHelper.getPublicKeys());
+        this.outboxPublicKeys.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         this.keyGenerationMsg.setText("Hello keyGen World :)");
         this.keyDeletionMsg.setText("Hello keyDel World :)");
@@ -82,6 +92,10 @@ public class Controller {
             case 3:
                 this.importKeyLabel.setText("");
                 this.exportKeyLabel.setText("");
+                break;
+            case 4:
+                this.outboxPublicKeys.setItems(keyHelper.getPublicKeys());
+                break;
         }
     }
 
@@ -108,6 +122,10 @@ public class Controller {
         );
     }
 
+
+    /**********************************************
+     *                  KLJUCEVI                  *
+     **********************************************/
     public void viewKeys() {
         initializeKeyViewer();
         if (keyHelper == null) {
@@ -124,7 +142,7 @@ public class Controller {
         String name = this.keyGenerationName.getText();
         String mail = this.keyGenerationMail.getText();
         String password = this.keyGenerationPassword.getText();
-        String algorithm =  this.keyGenerationAlgorithms.getValue(); // NULL if not selected
+        String algorithm = this.keyGenerationAlgorithms.getValue(); // NULL if not selected
 
         if (name.length() == 0 || mail.length() == 0 || password.length() == 0 || algorithm == null) {
             this.keyGenerationMsg.setText("Sva polja su obavezna.");
@@ -152,15 +170,19 @@ public class Controller {
         try {
             boolean result = keyHelper.deleteKey(this.stringKeyIdToLong(id), password);
             this.keyDeletionMsg.setText(result ? "Kljuc uspesno obrisan." : "Kljuc nije obrisan.");
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             this.keyDeletionMsg.setText("ID kljuca mora biti broj.");
         }
     }
 
+
+    /**********************************************
+     *                  UVOZ                      *
+     **********************************************/
     public void selectImportFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Izaberite fajl za uvoz");
-        Stage stage = (Stage)anchorPaneImportKey.getScene().getWindow();
+        Stage stage = (Stage) anchorPaneImportKey.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             System.out.println(file.getAbsolutePath());
@@ -175,7 +197,7 @@ public class Controller {
         this.importKeyLabel.setText("Uvozi se...");
 
         String filePath = this.importFilePath.getText();
-        String keyType = ((RadioButton)importKeyType.getSelectedToggle()).getText();
+        String keyType = ((RadioButton) importKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType);
 
         if (filePath.length() == 0 || keyType.length() == 0) {
@@ -190,12 +212,15 @@ public class Controller {
     }
 
 
+    /**********************************************
+     *                  IZVOZ                     *
+     **********************************************/
     public void selectExportFile() {
         System.out.println("select export file");
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Izaberite direktorijum za izvoz");
-        Stage stage = (Stage)anchorPaneExportKey.getScene().getWindow();
+        Stage stage = (Stage) anchorPaneExportKey.getScene().getWindow();
         File file = directoryChooser.showDialog(stage);
         if (file != null) {
             System.out.println(file.getAbsolutePath());
@@ -211,7 +236,7 @@ public class Controller {
 
         String keyId = this.exportKeyID.getText();
         String filePath = this.exportFilePath.getText();
-        String keyType = ((RadioButton)exportKeyType.getSelectedToggle()).getText();
+        String keyType = ((RadioButton) exportKeyType.getSelectedToggle()).getText();
         System.out.println(filePath + '\n' + keyType + " " + keyId);
         if (keyId.length() == 0 || filePath.length() == 0 || keyType.length() == 0) {
             this.exportKeyLabel.setText("Sva polja su obavezna.");
@@ -225,18 +250,23 @@ public class Controller {
         delay.play();
     }
 
+
+    /**********************************************
+     *                  PRIJEM                    *
+     **********************************************/
     public void selectInboxMessage() {
         System.out.println("select inbox message");
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Izaberite kriptovanu prijemnu poruku");
-        Stage stage = (Stage)anchorPaneReceiveMsg.getScene().getWindow();
+        Stage stage = (Stage) anchorPaneReceiveMsg.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             this.inboxMessagePath.setText(file.getAbsolutePath());
         } else {
             System.out.println("Fajl je NULL");
+            this.inboxMessagePath.setText("");
         }
     }
 
@@ -245,14 +275,14 @@ public class Controller {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Izaberite direktorijum za enkriptovanu poruku");
-        Stage stage = (Stage)anchorPaneReceiveMsg.getScene().getWindow();
+        Stage stage = (Stage) anchorPaneReceiveMsg.getScene().getWindow();
         File file = directoryChooser.showDialog(stage);
         if (file != null) {
             System.out.println(file.getAbsolutePath());
             this.decryptedMessagePath.setText(file.getAbsolutePath());
-            // this.decrpytedMessagePath.setWrapText(true);
         } else {
             System.out.println("Fajl je NULL");
+            this.decryptedMessagePath.setText("");
         }
     }
 
@@ -272,7 +302,10 @@ public class Controller {
         delay1.play();
 
         PauseTransition delay2 = new PauseTransition(Duration.seconds(2));
-        delay2.setOnFinished(event -> {this.inboxDialog.setVisible(false); this.inboxMessageInfos.setText("");});
+        delay2.setOnFinished(event -> {
+            this.inboxDialog.setVisible(false);
+            this.inboxMessageInfos.setText("");
+        });
         delay2.play();
     }
 
@@ -281,11 +314,77 @@ public class Controller {
     }
 
 
+    /**********************************************
+     *                  SLANJE                    *
+     **********************************************/
+    public void sendMessage() {
+        String msgPath = outboxMessagePath.getText();
+        String deliveryPath = outboxLocationPath.getText();
+
+        boolean isSignature = signatureFlag.isSelected();
+        long keyId = 0;
+        String keyPass = signatureKeyPass.getText();
+        if (isSignature) {
+            if (signatureKeyId.getText().length() == 0 || keyPass.length() == 0) {
+                outboxLabel.setText("Za izabrano potpisivanje nisu popunjena sva polja.");
+                return;
+            }
+            keyId = this.stringKeyIdToLong(signatureKeyId.getText());
+        }
+
+        boolean isEncrypton = encryptonFlag.isSelected();
+        String encryptionAlgo = this.outboxEncryptonAlgorithms.getSelectionModel().getSelectedItem();
+        if (isEncrypton && encryptionAlgo == null) {
+            outboxLabel.setText("Za izabranu enkripciju nisu popunjena sva polja.");
+            return;
+        }
+        ObservableList<KeyGuiVisualisation> pubKeys = this.outboxPublicKeys.getSelectionModel().getSelectedItems();
+
+        boolean isZip = zipFlag.isSelected();
+        boolean isRadix = radixFlag.isSelected();
+
+        System.out.println(msgPath + " " + deliveryPath + " " + isSignature + " " + keyId + " " + keyPass + " " + isEncrypton + " " + encryptionAlgo + " " + pubKeys + " " + isZip + " " + isRadix);
+    }
+
+    public void selectOutboxMessage() {
+        System.out.println("select outbox message");
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Izaberite prijemnu poruku za sifrovanje");
+        Stage stage = (Stage) anchorPaneSendMsg.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            System.out.println(file.getAbsolutePath());
+            this.outboxMessagePath.setText(file.getAbsolutePath());
+        } else {
+            System.out.println("Fajl je NULL");
+            this.outboxMessagePath.setText("");
+        }
+    }
+
+    public void selectOutboxLocation() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Izaberite direktorijum za slanje poruke");
+        Stage stage = (Stage) anchorPaneSendMsg.getScene().getWindow();
+        File file = directoryChooser.showDialog(stage);
+        if (file != null) {
+            System.out.println(file.getAbsolutePath());
+            this.outboxLocationPath.setText(file.getAbsolutePath());
+        } else {
+            System.out.println("Fajl je NULL");
+            this.outboxLocationPath.setText("");
+        }
+    }
+
+    /**********************************************
+     *                  HELPERI                   *
+     **********************************************/
+
     private long stringKeyIdToLong(String keyId) {
         return Long.parseUnsignedLong(keyId, 16);
     }
 
-    public void initializeApp(){
+    public void initializeApp() {
         TableUtils.installCopyPasteHandler(this.privateKeysTable);
         TableUtils.installCopyPasteHandler(this.publicKeysTable);
 

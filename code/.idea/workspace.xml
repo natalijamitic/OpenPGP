@@ -60,7 +60,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="73">
+            <state relative-caret-position="357">
               <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -81,39 +81,49 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_291/src.zip!/java/math/BigInteger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-81">
-              <caret line="3708" column="19" selection-start-line="3708" selection-start-column="19" selection-end-line="3708" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_291/src.zip!/java/lang/NumberFormatException.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="64" selection-start-line="64" selection-end-line="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="223" column="48" selection-start-line="223" selection-start-column="48" selection-end-line="223" selection-end-column="48" />
+            <state relative-caret-position="-238">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2966#3457#0" />
                 <element signature="e#2953#3741#0" />
                 <element signature="e#3747#4632#0" />
+                <element signature="e#5201#5804#0" />
+                <element signature="e#5810#6354#0" />
                 <element signature="e#6464#7118#0" />
                 <element signature="e#6701#7363#0" />
-                <element signature="e#11267#11268#0" expanded="true" />
-                <element signature="e#10866#10867#0" expanded="true" />
-                <element signature="e#10922#10923#0" expanded="true" />
+                <element signature="e#7420#7930#0" />
+                <element signature="e#7936#8507#0" />
+                <element signature="e#8513#9200#0" />
+                <element signature="e#9206#9420#0" />
+                <element signature="e#9426#10095#0" />
+                <element signature="e#12754#12755#0" expanded="true" />
+                <element signature="e#11583#12205#0" />
+                <element signature="e#12210#12802#0" />
+                <element signature="e#15754#15755#0" expanded="true" />
+                <element signature="e#10190#10481#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/openpgp.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="62">
+              <caret line="279" column="44" lean-forward="true" selection-start-line="279" selection-start-column="44" selection-end-line="279" selection-end-column="44" />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="278">
+              <caret line="24" column="32" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -155,8 +165,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
+            <state relative-caret-position="17">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#883#884#0" expanded="true" />
@@ -174,13 +184,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyGuiVisualisation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="34" lean-forward="true" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+            <state relative-caret-position="17">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#823#824#0" expanded="true" />
+                <element signature="e#865#866#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -216,6 +227,8 @@
       <find>deleteK</find>
       <find>radix</find>
       <find>getPriva</find>
+      <find>outboxEncryptonAlgorithms</find>
+      <find>closeI</find>
       <find>getPublicKeyRingForID</find>
     </findStrings>
   </component>
@@ -242,10 +255,11 @@
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Main.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/TableUtils.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyGenerator.java" />
-        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java" />
-        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyGuiVisualisation.java" />
+        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/openpgp.fxml" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java" />
+        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java" />
+        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyGuiVisualisation.java" />
       </list>
     </option>
   </component>
@@ -319,7 +333,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1622467796381" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1622473379277" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../bcprov-jdk15on-168.jar!/" />
     <property name="project.structure.last.edited" value="Project" />
@@ -652,7 +666,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java</url>
-          <line>22</line>
+          <line>21</line>
           <properties />
           <option name="timeStamp" value="68" />
         </line-breakpoint>
@@ -858,17 +872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="24" column="32" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
-          <folding>
-            <element signature="e#768#769#0" expanded="true" />
-            <element signature="e#796#797#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../bcpg-jdk15on-168.jar!/org/bouncycastle/openpgp/PGPSecretKeyRingCollection.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="31">
@@ -908,13 +911,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Globals.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/TableUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -943,10 +939,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="24" column="32" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/openpgp.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="279" column="44" lean-forward="true" selection-start-line="279" selection-start-column="44" selection-end-line="279" selection-end-column="44" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-238">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2966#3457#0" />
+            <element signature="e#2953#3741#0" />
+            <element signature="e#3747#4632#0" />
+            <element signature="e#5201#5804#0" />
+            <element signature="e#5810#6354#0" />
+            <element signature="e#6464#7118#0" />
+            <element signature="e#6701#7363#0" />
+            <element signature="e#7420#7930#0" />
+            <element signature="e#7936#8507#0" />
+            <element signature="e#8513#9200#0" />
+            <element signature="e#9206#9420#0" />
+            <element signature="e#9426#10095#0" />
+            <element signature="e#12754#12755#0" expanded="true" />
+            <element signature="e#11583#12205#0" />
+            <element signature="e#12210#12802#0" />
+            <element signature="e#15754#15755#0" expanded="true" />
+            <element signature="e#10190#10481#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Globals.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="44" selection-start-line="4" selection-start-column="44" selection-end-line="4" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#openFileLocation#0;class#KeyReaderWriter#0" />
+            <element signature="method#getSecretKeyRingForID#0;class#KeyReaderWriter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#883#884#0" expanded="true" />
@@ -963,42 +1020,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#openFileLocation#0;class#KeyReaderWriter#0" />
-            <element signature="method#getSecretKeyRingForID#0;class#KeyReaderWriter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyGuiVisualisation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="34" lean-forward="true" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="223" column="48" selection-start-line="223" selection-start-column="48" selection-end-line="223" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2966#3457#0" />
-            <element signature="e#2953#3741#0" />
-            <element signature="e#3747#4632#0" />
-            <element signature="e#6464#7118#0" />
-            <element signature="e#6701#7363#0" />
-            <element signature="e#11267#11268#0" expanded="true" />
-            <element signature="e#10866#10867#0" expanded="true" />
-            <element signature="e#10922#10923#0" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#865#866#0" expanded="true" />
           </folding>
         </state>
       </provider>

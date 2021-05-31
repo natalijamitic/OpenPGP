@@ -1,6 +1,5 @@
 package etf.openpgp.mn170085d_dm170084d.keys;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 public class KeyGuiVisualisation {
@@ -33,5 +32,9 @@ public class KeyGuiVisualisation {
     }
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String toString() {
+        return owner + " - " + id;
     }
 }

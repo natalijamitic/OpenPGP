@@ -1,6 +1,5 @@
 package etf.openpgp.mn170085d_dm170084d.keys;
 
-import etf.openpgp.mn170085d_dm170084d.Globals;
 import javafx.collections.ObservableList;
 import org.bouncycastle.openpgp.*;
 
