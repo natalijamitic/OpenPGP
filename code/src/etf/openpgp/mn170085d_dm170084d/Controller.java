@@ -1,5 +1,6 @@
 package etf.openpgp.mn170085d_dm170084d;
 
+import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
+import java.util.Date;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -57,7 +59,9 @@ public class Controller {
         // initialization here, if needed...
         System.out.println("init");
 
-        this.keyHelper = new KeyHelper();
+        if (keyHelper == null) {
+            this.keyHelper = new KeyHelper();
+        }
 
         this.keyGenerationMsg.setText("Hello keyGen World :)");
         this.keyDeletionMsg.setText("Hello keyDel World :)");
@@ -80,28 +84,35 @@ public class Controller {
         }
     }
 
-    // Dummy function how to (refresh) populate tables (in first tab)
-    public void viewKeys() {
-        ObservableList<DummyObject> data = FXCollections.observableArrayList(
-            new DummyObject(2512352, "br1"),
-            new DummyObject(2512352, "br2"),
-            new DummyObject(2512352, "br3"),
-            new DummyObject(2512352, "br4"),
-            new DummyObject(2512352, "br5"),
-            new DummyObject(2512352, "br6")
-        );
-
+    private void initializeKeyViewer() {
         this.privateKeysTableKeyIDCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("id")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("id")
         );
         this.privateKeysTableOwnerIDCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("owner")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("owner")
         );
         this.privateKeysTableTimestampCol.setCellValueFactory(
-                new PropertyValueFactory<DummyObject, String>("date")
+                new PropertyValueFactory<KeyGuiVisualisation, String>("date")
         );
+        this.publicKeysTableKeyIDCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("id")
+        );
+        this.publicKeysTableOwnerIDCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("owner")
+        );
+        this.publicKeysTableTimestampCol.setCellValueFactory(
+                new PropertyValueFactory<KeyGuiVisualisation, String>("date")
+        );
+    }
 
-        this.privateKeysTable.setItems(data);
+    // Dummy function how to (refresh) populate tables (in first tab)
+    public void viewKeys() {
+        initializeKeyViewer();
+        if (keyHelper == null) {
+            this.keyHelper = new KeyHelper();
+        }
+
+        this.privateKeysTable.setItems(keyHelper.getPrivateKeys());
     }
 
     public void generateKey() {

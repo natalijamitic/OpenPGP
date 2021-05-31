@@ -1,12 +1,16 @@
 package etf.openpgp.mn170085d_dm170084d.keys;
 
 import etf.openpgp.mn170085d_dm170084d.Globals;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
 
 import java.io.*;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class KeyReaderWriter {
@@ -79,5 +83,30 @@ public class KeyReaderWriter {
 
     public PGPPublicKeyRingCollection getPublicKeys() {
         return publicKeys;
+    }
+
+    public ObservableList<KeyGuiVisualisation> getPrivateKeysVisaulised() {
+        ObservableList<KeyGuiVisualisation> privateKeysList = FXCollections.observableArrayList();
+
+        Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
+        PGPSecretKeyRing secretKeyRing;
+
+        while (iterator.hasNext()) {
+            secretKeyRing = iterator.next();
+            Iterator<PGPSecretKey> keyIterator = secretKeyRing.getSecretKeys();
+            PGPSecretKey masterKey = keyIterator.next();
+
+            // One master key can have multiple sub keys.
+            while (keyIterator.hasNext()) {
+                PGPSecretKey subKey = keyIterator.next();   // returns the key id of the public key (this we need)
+                long id = subKey.getKeyID();
+                String owner = masterKey.getUserIDs().next();
+                Date date = subKey.getPublicKey().getCreationTime();
+
+                privateKeysList.add(new KeyGuiVisualisation(id, owner, date));
+            }
+        }
+
+        return privateKeysList;
     }
 }
