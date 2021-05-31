@@ -79,6 +79,9 @@ public class Controller {
             case 0:
                 viewKeys();
                 break;
+            case 3:
+                this.importKeyLabel.setText("");
+                this.exportKeyLabel.setText("");
         }
     }
 
@@ -180,6 +183,10 @@ public class Controller {
         }
         boolean result = keyType.equals("Privatni") ? this.keyHelper.importPrivateKey(filePath) : this.keyHelper.importPublicKey(filePath);
         this.importKeyLabel.setText(result ? "Uspesan uvoz." : "Ups, doslo je do greske.");
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.importKeyLabel.setText(""));
+        delay.play();
     }
 
 
@@ -212,6 +219,10 @@ public class Controller {
 
         boolean result = keyType.equals("Privatni") ? this.keyHelper.exportPrivateKey(filePath, this.stringKeyIdToLong(keyId)) : this.keyHelper.exportPublicKey(filePath, this.stringKeyIdToLong(keyId));
         this.exportKeyLabel.setText(result ? "Uspesan izvoz." : "Ups, doslo je do greske.");
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> this.exportKeyLabel.setText(""));
+        delay.play();
     }
 
     public void selectInboxMessage() {

@@ -15,7 +15,7 @@ public class KeyHelper {
     }
 
     public boolean generateRSAKey(String name, String mail, String passphrase, String algorithm) {
-        String identity = name + "~" + mail;
+        String identity = name + " <" + mail + ">";
         int keySize = Integer.parseInt(algorithm.substring(4));
 
         PGPSecretKeyRing secretKeyRing = this.keyGenerator.generateRSAPGPSecretKeyRing(identity, passphrase, keySize);
