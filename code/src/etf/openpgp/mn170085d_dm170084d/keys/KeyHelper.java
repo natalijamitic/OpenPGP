@@ -23,7 +23,11 @@ public class KeyHelper {
     }
 
     public ObservableList<KeyGuiVisualisation> getPrivateKeys() {
-        return this.keyReaderWriter.getPrivateKeysVisaulised();
+        return this.keyReaderWriter.getPrivateKeys();
+    }
+
+    public boolean deleteKey(long id, String password) {
+        return this.keyReaderWriter.deleteKey(id, password);
     }
 
 //    public ObservableList<KeyGuiVisualisation> getPublicKeys() {

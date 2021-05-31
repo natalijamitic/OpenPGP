@@ -45,7 +45,7 @@ public class Controller {
     @FXML
     private TextArea importFilePath, exportFilePath, inboxMessagePath, decryptedMessagePath;
     @FXML
-    private AnchorPane anchorPaneImportKey, anchorPaneExportKey, anchorPaneReceiveMsg, anchorPaneSendMsg;
+    private AnchorPane anchorPaneImportKey, anchorPaneExportKey, anchorPaneReceiveMsg, anchorPaneSendMsg, keyGenerationAnchorPane;
     @FXML
     private DialogPane inboxDialog;
 
@@ -83,6 +83,8 @@ public class Controller {
     }
 
     private void initializeKeyViewer() {
+        this.privateKeysTable.getSelectionModel().setCellSelectionEnabled(true);
+        this.publicKeysTable.getSelectionModel().setCellSelectionEnabled(true);
         this.privateKeysTableKeyIDCol.setCellValueFactory(
                 new PropertyValueFactory<KeyGuiVisualisation, String>("id")
         );
@@ -110,6 +112,7 @@ public class Controller {
         }
 
         this.privateKeysTable.setItems(keyHelper.getPrivateKeys());
+        this.publicKeysTable.setItems(keyHelper.getPrivateKeys());
     }
 
     public void generateKey() {
@@ -133,13 +136,20 @@ public class Controller {
     }
 
     public void deleteKey() {
+        //TODO: Option for deleting public keys???
+
         this.keyDeletionMsg.setText("Brise se...");
 
         String id = this.keyDeletionID.getText();
         String password = this.keyDeletionPassword.getText();
 
-        System.out.println("key Generation Button");
-        System.out.println(id + ' ' + password);
+        if (id.length() == 0 || password.length() == 0) {
+            this.keyDeletionMsg.setText("Sva polja su obavezna.");
+            return;
+        }
+
+        boolean result = keyHelper.deleteKey(Long.parseUnsignedLong(id, 16), password);
+        this.keyDeletionMsg.setText(result ? "Kljuc uspesno obrisan." : "Kljuc nije obrisan.");
     }
 
     // FAJL PUTANJA
@@ -249,5 +259,14 @@ public class Controller {
 
     public void closeInboxDialog() {
         this.inboxDialog.setVisible(false);
+    }
+
+
+    public void initializeApp(){
+        TableUtils.installCopyPasteHandler(this.privateKeysTable);
+        TableUtils.installCopyPasteHandler(this.publicKeysTable);
+
+        TableUtils.installContextMenu(this.privateKeysTable);
+        TableUtils.installContextMenu(this.publicKeysTable);
     }
 }

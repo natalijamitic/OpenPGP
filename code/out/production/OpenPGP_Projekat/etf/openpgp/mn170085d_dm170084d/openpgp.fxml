@@ -54,7 +54,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="etf.openpgp.mn170085d_dm170084d.Controller">
+<VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="etf.openpgp.mn170085d_dm170084d.Controller">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
@@ -62,9 +62,9 @@
               <tabs>
                   <Tab fx:id="tabKeyView" onSelectionChanged="#tabSelected" text="Pregled kljuceva">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane fx:id="keyGenerationAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="privateKeysTable" layoutX="50.0" layoutY="50.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                              <TableView fx:id="privateKeysTable" editable="true" layoutX="50.0" layoutY="50.0" prefHeight="150.0" prefWidth="700.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                                 <columns>
                                   <TableColumn fx:id="privateKeysTableKeyIDCol" prefWidth="233.0" text="keyID" />
                                   <TableColumn fx:id="privateKeysTableOwnerIDCol" prefWidth="233.0" text="OwnerID" />

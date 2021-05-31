@@ -7,6 +7,7 @@ import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
+import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
 import java.io.*;
 import java.util.Date;
@@ -44,11 +45,10 @@ public class KeyReaderWriter {
     }
 
     public boolean savePGPSecretKeyRing(PGPSecretKeyRing secretKeyRing) {
-        if (secretKeyRing == null)
-            return false;
-
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(Globals.privateKeysPath))){
-            this.privateKeys = PGPSecretKeyRingCollection.addSecretKeyRing(this.privateKeys, secretKeyRing);
+            if (secretKeyRing != null) {
+                this.privateKeys = PGPSecretKeyRingCollection.addSecretKeyRing(this.privateKeys, secretKeyRing);
+            }
             this.privateKeys.encode(secretOut);
             return true;
         } catch (FileNotFoundException e) {
@@ -61,11 +61,10 @@ public class KeyReaderWriter {
     }
 
     public boolean savePGPPublicKeyRing(PGPPublicKeyRing publicKeyRing) {
-        if (publicKeyRing == null)
-            return false;
-
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(Globals.publicKeysPath))) {
-            this.publicKeys = PGPPublicKeyRingCollection.addPublicKeyRing(this.publicKeys, publicKeyRing);
+            if (publicKeyRing != null) {
+                this.publicKeys = PGPPublicKeyRingCollection.addPublicKeyRing(this.publicKeys, publicKeyRing);
+            }
             this.publicKeys.encode(secretOut);
             return true;
         } catch (FileNotFoundException e) {
@@ -77,15 +76,7 @@ public class KeyReaderWriter {
         return false;
     }
 
-    public PGPSecretKeyRingCollection getPrivateKeys() {
-        return privateKeys;
-    }
-
-    public PGPPublicKeyRingCollection getPublicKeys() {
-        return publicKeys;
-    }
-
-    public ObservableList<KeyGuiVisualisation> getPrivateKeysVisaulised() {
+    public ObservableList<KeyGuiVisualisation> getPrivateKeys() {
         ObservableList<KeyGuiVisualisation> privateKeysList = FXCollections.observableArrayList();
 
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
@@ -99,6 +90,7 @@ public class KeyReaderWriter {
             // One master key can have multiple sub keys.
             while (keyIterator.hasNext()) {
                 PGPSecretKey subKey = keyIterator.next();   // returns the key id of the public key (this we need)
+
                 long id = subKey.getKeyID();
                 String owner = masterKey.getUserIDs().next();
                 Date date = subKey.getPublicKey().getCreationTime();
@@ -108,5 +100,39 @@ public class KeyReaderWriter {
         }
 
         return privateKeysList;
+    }
+
+    public boolean deleteKey(long idToDelete, String passphrase) {
+        try {
+            Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
+            PGPSecretKeyRing secretKeyRing;
+
+            while (iterator.hasNext()) {
+                secretKeyRing = iterator.next();
+                Iterator<PGPSecretKey> keyIterator = secretKeyRing.getSecretKeys();
+                PGPSecretKey masterKey = keyIterator.next();
+
+                // One master key can have multiple sub keys.
+                while (keyIterator.hasNext()) {
+                    PGPSecretKey subKey = keyIterator.next();   // returns the key id of the public key (this we need)
+
+                    long id = subKey.getKeyID();
+
+                    if (id == idToDelete) {
+                        subKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(passphrase.toCharArray()));
+
+                        this.privateKeys = this.privateKeys.removeSecretKeyRing(this.privateKeys, this.privateKeys.getSecretKeyRing(id));
+                        this.savePGPSecretKeyRing(null);
+
+                        return true;
+                    }
+                }
+            }
+        } catch (PGPException e) {
+            System.out.println("Lozinka pogresna.");
+            // e.printStackTrace();
+        }
+
+        return false;
     }
 }
