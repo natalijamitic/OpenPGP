@@ -164,25 +164,31 @@ public class PGPTest {
 
         byte[] data = {0x1, 0x2, 0x3};
 
-        byte[] signed = MessagingService.toRadix64(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
+//        byte[] signed = MessagingService.encodeArmoredStream(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
+//
+//        System.out.println("Original Data");
+//        for (byte i : data)
+//            System.out.print(i);
+//        System.out.println();
+//
+//        System.out.println("Signed data");
+//        for (byte i : signed)
+//            System.out.print((char) i);
+//
+//        boolean verified = MessagingService.verifySignature(MessagingService.encodeArmoredStream(signed), pk1);
+//
+//        byte[] originalData = MessagingService.readSignedMessage(MessagingService.encodeArmoredStream(signed));
+//        System.out.println("Signature verified: " + verified);
+//        for(byte b : originalData)
+//            System.out.print(b);
+//        System.out.println();
 
-        System.out.println("Original Data");
-        for (byte i : data)
-            System.out.print(i);
+        byte[] base64 = MessagingService.encodeBase64(data);
+
         System.out.println();
-
-        System.out.println("Signed data");
-        for (byte i : signed)
-            System.out.print((char) i);
-
-        boolean verified = MessagingService.verifySignature(MessagingService.fromRadix64(signed), pk1);
-
-        byte[] originalData = MessagingService.readSignedMessage(MessagingService.fromRadix64(signed));
-        System.out.println("Signature verified: " + verified);
-        for(byte b : originalData)
+        for(byte b : base64)
             System.out.print(b);
         System.out.println();
-
 
 //        byte[] decrypted = MessagingService.decrypt(encrypted, priv1);
 //

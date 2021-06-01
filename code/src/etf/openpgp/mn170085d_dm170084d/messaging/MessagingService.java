@@ -6,6 +6,7 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.PublicKeyDataDecryptorFactory;
 import org.bouncycastle.openpgp.operator.jcajce.*;
+import org.bouncycastle.util.encoders.Base64;
 
 import java.io.*;
 import java.security.SecureRandom;
@@ -35,7 +36,7 @@ public class MessagingService {
         return cdata.getDataStream().readAllBytes();
     }
 
-    public static byte[] toRadix64(byte[] data) throws IOException {
+    public static byte[] encodeArmoredStream(byte[] data) throws IOException {
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
         ArmoredOutputStream armoredOutputStream = new ArmoredOutputStream(byteArray);
         armoredOutputStream.write(data);
@@ -44,8 +45,18 @@ public class MessagingService {
         return byteArray.toByteArray();
     }
 
-    public static byte[] fromRadix64(byte[] data) throws IOException {
+    public static byte[] decodeArmoredStream(byte[] data) throws IOException {
         return PGPUtil.getDecoderStream(new ByteArrayInputStream(data)).readAllBytes();
+    }
+
+    public static byte[] encodeBase64(byte[] data)
+    {
+        return Base64.encode(data);
+    }
+
+    public static byte[] decodeBase64(byte[] data)
+    {
+        return Base64.decode(data);
     }
 
     public static byte[] encrypt(byte[] data, PGPPublicKey publicKey, int algorithm) throws Exception {
