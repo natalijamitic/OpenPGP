@@ -38,51 +38,6 @@ public class PGPTest {
         return kg.generateKey();
     }
 
-    public static byte[] createSignedObject(int signingAlg, PGPPrivateKey signingKey, byte[] data) throws PGPException, IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BCPGOutputStream bcpgos = new BCPGOutputStream(baos);
-
-        PGPSignatureGenerator sg = new PGPSignatureGenerator(new JcaPGPContentSignerBuilder(signingAlg, PGPUtil.SHA1).setProvider("BC"));
-        sg.init(PGPSignature.BINARY_DOCUMENT, signingKey);
-        sg.generateOnePassVersion(false).encode(bcpgos);
-
-        PGPLiteralDataGenerator ldg = new PGPLiteralDataGenerator();
-
-        OutputStream os = ldg.open(bcpgos, PGPLiteralData.BINARY, "_CONSOLE", data.length, new Date());
-
-        for(int i = 0; i < data.length; i++)
-        {
-            os.write(data[i]);
-            sg.update(data[i]);
-        }
-
-        ldg.close();
-        sg.generate().encode(bcpgos);
-        return baos.toByteArray();
-    }
-
-    public static boolean verifySignedObject(PGPPublicKey verifyingKey, byte[] pgpSignedData) throws IOException, PGPException {
-        JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(pgpSignedData);
-
-        PGPOnePassSignatureList opl = (PGPOnePassSignatureList)pgpFact.nextObject();
-        PGPOnePassSignature ops = opl.get(0);
-
-        PGPLiteralData literalData = (PGPLiteralData)pgpFact.nextObject();
-        InputStream is = literalData.getInputStream();
-
-        ops.init(new JcaPGPContentVerifierBuilderProvider().setProvider("BC"), verifyingKey);
-
-        int ch;
-        while((ch = is.read()) >= 0)
-        {
-            ops.update((byte) ch);
-        }
-
-        PGPSignatureList sigList = (PGPSignatureList)pgpFact.nextObject();
-        PGPSignature sig = sigList.get(0);
-
-        return ops.verify(sig);
-    }
 
     public static void potpisivanje() throws NoSuchAlgorithmException, NoSuchProviderException, IOException, InvalidAlgorithmParameterException, PGPException {
         int keySize = 1024;
@@ -209,21 +164,30 @@ public class PGPTest {
 
         byte[] data = {0x1, 0x2, 0x3};
 
-        byte[] encrypted = MessagingService.encrypt(data, pk1, SymmetricKeyAlgorithmTags.AES_128);
+        byte[] signed = MessagingService.toRadix64(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
 
         System.out.println("Original Data");
         for (byte i : data)
             System.out.print(i);
         System.out.println();
 
-        System.out.println("Encrypted data");
-        for (byte i : encrypted)
+        System.out.println("Signed data");
+        for (byte i : signed)
             System.out.print((char) i);
 
-        byte[] decrypted = MessagingService.decrypt(encrypted, priv1);
+        boolean verified = MessagingService.verifySignature(MessagingService.fromRadix64(signed), pk1);
 
-        System.out.println("\nDecrypted data");
-        for (byte i : decrypted)
-            System.out.print(i);
+        byte[] originalData = MessagingService.readSignedMessage(MessagingService.fromRadix64(signed));
+        System.out.println("Signature verified: " + verified);
+        for(byte b : originalData)
+            System.out.print(b);
+        System.out.println();
+
+
+//        byte[] decrypted = MessagingService.decrypt(encrypted, priv1);
+//
+//        System.out.println("\nDecrypted data");
+//        for (byte i : decrypted)
+//            System.out.print(i);
     }
 }

@@ -1,18 +1,15 @@
 package etf.openpgp.mn170085d_dm170084d.messaging;
 
 import org.bouncycastle.bcpg.ArmoredOutputStream;
+import org.bouncycastle.bcpg.BCPGOutputStream;
 import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.PublicKeyDataDecryptorFactory;
-import org.bouncycastle.openpgp.operator.jcajce.JcePGPDataEncryptorBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcePublicKeyDataDecryptorFactoryBuilder;
-import org.bouncycastle.openpgp.operator.jcajce.JcePublicKeyKeyEncryptionMethodGenerator;
+import org.bouncycastle.openpgp.operator.jcajce.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Iterator;
 
 public class MessagingService {
@@ -85,5 +82,58 @@ public class MessagingService {
             return decryptedBytes;
         }
         throw new Exception("Provided data is not encrypted");
+    }
+
+    public static byte[] sign(byte[] data, PGPPrivateKey signingKey, int signingAlg) throws PGPException, IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        BCPGOutputStream bcpgos = new BCPGOutputStream(byteStream);
+
+        PGPSignatureGenerator sg = new PGPSignatureGenerator(new JcaPGPContentSignerBuilder(signingAlg, PGPUtil.SHA1).setProvider("BC"));
+        sg.init(PGPSignature.BINARY_DOCUMENT, signingKey);
+        sg.generateOnePassVersion(false).encode(bcpgos);
+
+        PGPLiteralDataGenerator ldg = new PGPLiteralDataGenerator();
+        OutputStream os = ldg.open(bcpgos, PGPLiteralData.BINARY, "_CONSOLE", data.length, new Date());
+
+        for(int i = 0; i < data.length; i++)
+        {
+            os.write(data[i]);
+            sg.update(data[i]);
+        }
+
+        ldg.close();
+        sg.generate().encode(bcpgos);
+        byteStream.close();
+        bcpgos.close();
+        return byteStream.toByteArray();
+    }
+
+    public static boolean verifySignature(byte[] pgpSignedData, PGPPublicKey verifyingKey) throws IOException, PGPException {
+        JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(pgpSignedData);
+
+        PGPOnePassSignatureList opl = (PGPOnePassSignatureList)pgpFact.nextObject();
+        PGPOnePassSignature ops = opl.get(0);
+
+        PGPLiteralData literalData = (PGPLiteralData)pgpFact.nextObject();
+        InputStream is = literalData.getInputStream();
+
+        ops.init(new JcaPGPContentVerifierBuilderProvider().setProvider("BC"), verifyingKey);
+
+        byte[] data = is.readAllBytes();
+        for(byte i : data)
+            ops.update(i);
+
+        PGPSignatureList sigList = (PGPSignatureList)pgpFact.nextObject();
+        PGPSignature sig = sigList.get(0);
+
+        return ops.verify(sig);
+    }
+
+    public static byte[] readSignedMessage(byte[] pgpSignedData) throws IOException {
+        JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(pgpSignedData);
+        pgpFact.nextObject();
+        PGPLiteralData literalData = (PGPLiteralData) pgpFact.nextObject();
+
+        return literalData.getInputStream().readAllBytes();
     }
 }
