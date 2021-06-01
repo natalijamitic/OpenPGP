@@ -51,12 +51,15 @@ public class KeyReaderWriter {
             }
             this.privateKeys.encode(secretOut);
             return true;
+        } catch(IllegalArgumentException e) {
+            System.out.println("duplo");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        this.savePGPPublicKeyRing(null);
         return false;
     }
 
@@ -66,13 +69,17 @@ public class KeyReaderWriter {
                 this.publicKeys = PGPPublicKeyRingCollection.addPublicKeyRing(this.publicKeys, publicKeyRing);
             }
             this.publicKeys.encode(secretOut);
+            System.out.println("sacuvano");
             return true;
+        } catch(IllegalArgumentException e) {
+            System.out.println("duplo");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        this.savePGPPublicKeyRing(null);
         return false;
     }
 
@@ -131,9 +138,7 @@ public class KeyReaderWriter {
     public boolean importPrivateKey(String path) {
         try (InputStream inputStream = new ArmoredInputStream(new FileInputStream(path))) {
             PGPSecretKeyRing secretKeyRing = new PGPSecretKeyRing(inputStream, new JcaKeyFingerprintCalculator());
-            this.savePGPSecretKeyRing(secretKeyRing);
-
-            return true;
+            return this.savePGPSecretKeyRing(secretKeyRing);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (PGPException e) {
@@ -146,8 +151,7 @@ public class KeyReaderWriter {
     public boolean importPublicKey(String path) {
         try (InputStream inputStream = new ArmoredInputStream(new FileInputStream(path))) {
             PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing(inputStream, new JcaKeyFingerprintCalculator());
-            this.savePGPPublicKeyRing(publicKeyRing);
-            return true;
+            return this.savePGPPublicKeyRing(publicKeyRing);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,8 +207,6 @@ public class KeyReaderWriter {
             Desktop.getDesktop().open(new File(path));
         }
     }
-
-
 
     private PGPPublicKeyRing getPublicKeyRingForID(long idToGet) {
         // Check if it public key from other users

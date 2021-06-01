@@ -37,4 +37,8 @@ public class KeyGuiVisualisation {
     public String toString() {
         return owner + " - " + id;
     }
+
+    public long stringKeyIdToLong(String keyId) {
+        return Long.parseUnsignedLong(keyId, 16);
+    }
 }

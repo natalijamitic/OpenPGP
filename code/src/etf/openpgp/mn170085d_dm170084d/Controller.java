@@ -19,7 +19,7 @@ import javafx.util.Duration;
 
 public class Controller {
     final String[] generationAlgorithms = {"RSA 1024", "RSA 2048", "RSA 4096"};
-    final String[] simetricAlgorithms = {"3DES + EDE", "AES 128"};
+    final String[] simetricAlgorithms = {"3DES", "AES 128"};
 
     @FXML
     private TabPane tabPane;
@@ -204,7 +204,9 @@ public class Controller {
             this.importKeyLabel.setText("Sva polja su obavezna.");
         }
         boolean result = keyType.equals("Privatni") ? this.keyHelper.importPrivateKey(filePath) : this.keyHelper.importPublicKey(filePath);
-        this.importKeyLabel.setText(result ? "Uspesan uvoz." : "Ups, doslo je do greske.");
+        System.out.println("OVDE");
+        System.out.println(result);
+        this.importKeyLabel.setText(result ? "Uspesan uvoz." : "Ups, doslo je do greske. Verovatno vec postoji kljuc sa tim IDijem.");
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(event -> this.importKeyLabel.setText(""));
