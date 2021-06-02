@@ -3,6 +3,8 @@ package etf.openpgp.mn170085d_dm170084d.keys;
 import javafx.collections.ObservableList;
 import org.bouncycastle.openpgp.*;
 
+import java.util.Iterator;
+
 public class KeyHelper {
     private KeyReaderWriter keyReaderWriter;
     private KeyGenerator keyGenerator;
@@ -49,6 +51,26 @@ public class KeyHelper {
     public boolean importPublicKey(String filePath) {
         return this.keyReaderWriter.importPublicKey(filePath);
     }
+
+    public PGPPublicKeyRing getPublicKeyRingById(long Id)
+    {
+        return this.keyReaderWriter.getPublicKeyRingForID(Id);
+    }
+
+    public PGPSecretKey getSecretKeyById(long Id)
+    {
+        PGPSecretKey secretKey = this.keyReaderWriter.getSecretSubKeyByID(Id);
+        return secretKey;
+    }
+
+    public PGPPublicKey extractPublicKey(PGPPublicKeyRing publicKeyRing)
+    {
+        Iterator<PGPPublicKey> publicKeys = publicKeyRing.getPublicKeys();
+        PGPPublicKey publicKey = publicKeys.next();
+        publicKey = publicKeys.next();
+        return publicKey;
+    }
+
 
 //    public ObservableList<KeyGuiVisualisation> getPublicKeys() {
 //        return this.keyReaderWriter.getPublicKeysVisaulised();

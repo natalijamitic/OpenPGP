@@ -208,7 +208,7 @@ public class KeyReaderWriter {
         }
     }
 
-    private PGPPublicKeyRing getPublicKeyRingForID(long idToGet) {
+    public PGPPublicKeyRing getPublicKeyRingForID(long idToGet) {
         // Check if it public key from other users
         Iterator<PGPPublicKeyRing> iterator = this.publicKeys.getKeyRings();
         PGPPublicKeyRing publicKeyRing;
@@ -258,7 +258,7 @@ public class KeyReaderWriter {
         return null;
     }
 
-    private PGPSecretKey getSecretSubKeyByID(long idToGet) {
+    public PGPSecretKey getSecretSubKeyByID(long idToGet) {
         PGPSecretKeyRing secretKeyRing;
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
 

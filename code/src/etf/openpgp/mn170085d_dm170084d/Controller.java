@@ -2,6 +2,8 @@ package etf.openpgp.mn170085d_dm170084d;
 
 import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
+import etf.openpgp.mn170085d_dm170084d.keys.KeyReaderWriter;
+import etf.openpgp.mn170085d_dm170084d.messaging.MessagingUtils;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,12 +12,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.File;
+import java.util.Iterator;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
+import org.bouncycastle.openpgp.*;
+import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
 public class Controller {
     final String[] generationAlgorithms = {"RSA 1024", "RSA 2048", "RSA 4096"};
@@ -320,32 +326,62 @@ public class Controller {
      *                  SLANJE                    *
      **********************************************/
     public void sendMessage() {
-        String msgPath = outboxMessagePath.getText();
-        String deliveryPath = outboxLocationPath.getText();
+        //srcPath, dstPath, isSigned, signingKey
+        String srcPath = outboxMessagePath.getText();
+        String dstPath = outboxLocationPath.getText();
 
-        boolean isSignature = signatureFlag.isSelected();
-        long keyId = 0;
-        String keyPass = signatureKeyPass.getText();
-        if (isSignature) {
-            if (signatureKeyId.getText().length() == 0 || keyPass.length() == 0) {
+        boolean isSigned = signatureFlag.isSelected();
+        long signedKeyId = 0;
+        PGPPrivateKey signingKey = null;
+        String signatureKeyPassword = signatureKeyPass.getText();
+        int signingAlgorithm = -1;
+        if (isSigned) {
+            if (signatureKeyId.getText().length() == 0 || signatureKeyPassword.length() == 0) {
                 outboxLabel.setText("Za izabrano potpisivanje nisu popunjena sva polja.");
                 return;
             }
-            keyId = this.stringKeyIdToLong(signatureKeyId.getText());
+            signedKeyId = this.stringKeyIdToLong(signatureKeyId.getText());
+            PGPSecretKey secretKey = this.keyHelper.getSecretKeyById(signedKeyId);
+            try {
+                signingKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(signatureKeyPassword.toCharArray()));
+                signingAlgorithm = secretKey.getPublicKey().getAlgorithm();
+            } catch (PGPException e) {
+                outboxLabel.setText("Pogresna sifra privatnog kljuca za potpisivanje");
+                return;
+            }
         }
 
-        boolean isEncrypton = encryptonFlag.isSelected();
+        boolean isEncrypted = encryptonFlag.isSelected();
         String encryptionAlgo = this.outboxEncryptonAlgorithms.getSelectionModel().getSelectedItem();
-        if (isEncrypton && encryptionAlgo == null) {
+        if (isEncrypted && encryptionAlgo == null) {
             outboxLabel.setText("Za izabranu enkripciju nisu popunjena sva polja.");
             return;
         }
+        int encryptionAlgorithm = -1;
+        if("3DES".equals(encryptionAlgo))
+            encryptionAlgorithm = SymmetricKeyAlgorithmTags.TRIPLE_DES;
+        else
+            encryptionAlgorithm = SymmetricKeyAlgorithmTags.AES_128;
         ObservableList<KeyGuiVisualisation> pubKeys = this.outboxPublicKeys.getSelectionModel().getSelectedItems();
+        PGPPublicKeyRing publicKeyRing = null;
+        PGPPublicKey publicKey = null;
+        if(isEncrypted)
+        {
+            for(KeyGuiVisualisation keyGui : pubKeys)
+            {
+                long pubKeyId = keyGui.stringKeyIdToLong(keyGui.getId());
+                publicKeyRing = this.keyHelper.getPublicKeyRingById(pubKeyId);
+                break;
+            }
+            publicKey = this.keyHelper.extractPublicKey(publicKeyRing);
+        }
 
-        boolean isZip = zipFlag.isSelected();
+        boolean isZipped = zipFlag.isSelected();
         boolean isRadix = radixFlag.isSelected();
 
-        System.out.println(msgPath + " " + deliveryPath + " " + isSignature + " " + keyId + " " + keyPass + " " + isEncrypton + " " + encryptionAlgo + " " + pubKeys + " " + isZip + " " + isRadix);
+        MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, isEncrypted, publicKey, encryptionAlgorithm, isZipped, isRadix);
+
+        System.out.println(srcPath + " " + dstPath + " " + isSigned + " " + signedKeyId + " " + signatureKeyPassword + " " + isEncrypted + " " + encryptionAlgo + " " + pubKeys + " " + isZipped + " " + isRadix);
     }
 
     public void selectOutboxMessage() {

@@ -164,7 +164,11 @@ public class PGPTest {
 
         byte[] data = {0x1, 0x2, 0x3};
 
-//        byte[] signed = MessagingService.encodeArmoredStream(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
+        byte[] signed = MessagingService.encodeArmoredStream(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
+        PGPSecretKey secretKey = skr1.getSecretKey();
+        PGPPublicKey publicKey = secretKey.getPublicKey();
+        int algo = publicKey.getAlgorithm();
+
 //
 //        System.out.println("Original Data");
 //        for (byte i : data)
