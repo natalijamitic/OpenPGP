@@ -56,6 +56,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="etf.openpgp.mn170085d_dm170084d.Controller">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -110,7 +111,7 @@
                                  <children>
                                     <TextField fx:id="keyGenerationName" GridPane.columnIndex="1" />
                                     <TextField fx:id="keyGenerationMail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="keyGenerationPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <PasswordField fx:id="keyGenerationPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label text="Ime :" />
                                     <Label text="Sifra :" GridPane.rowIndex="2" />
                                     <Label text="Mail :" GridPane.rowIndex="1" />
@@ -141,7 +142,7 @@
                                     <Label text="ID kljuca :" />
                                     <Label text="Sifra :" GridPane.rowIndex="1" />
                                     <TextField fx:id="keyDeletionID" GridPane.columnIndex="1" />
-                                    <TextField fx:id="keyDeletionPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <PasswordField fx:id="keyDeletionPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                               <Button fx:id="keyDeletionButton" layoutX="663.0" layoutY="396.0" mnemonicParsing="false" onAction="#deleteKey" prefHeight="34.0" prefWidth="90.0" text="Obrisi" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0" />
@@ -270,7 +271,7 @@
                                        </GridPane.margin>
                                     </Label>
                                     <TextField fx:id="signatureKeyId" promptText="ID kljuca" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                    <TextField fx:id="signatureKeyPass" promptText="sifra" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <PasswordField fx:id="signatureKeyPass" promptText="sifra" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     <CheckBox fx:id="signatureFlag" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <CheckBox fx:id="encryptonFlag" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Label text="Enkripcija:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
@@ -344,7 +345,7 @@
                                       </rowConstraints>
                                        <children>
                                           <Label text="Sifra za privatni kljuc:" />
-                                          <TextField fx:id="inboxMessagePrivateKey" GridPane.columnIndex="1" />
+                                          <PasswordField fx:id="inboxMessagePrivateKey" GridPane.columnIndex="1" />
                                           <Label fx:id="inboxMessageInfos" alignment="CENTER" contentDisplay="CENTER" prefWidth="400.0" text="Informacije o prijemnoj poruci ce biti ispisane ovde blablablalbalblalbalbla......................." textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                           <Button fx:id="inboxMessageInsertPrivateKeyButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#checkInboxMessagePrivateKey" text="Dekriptuj" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                                           <Button cancelButton="true" mnemonicParsing="false" onAction="#closeInboxDialog" text="Izadji" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
