@@ -1,6 +1,7 @@
 package etf.openpgp.mn170085d_dm170084d;
 
 import etf.openpgp.mn170085d_dm170084d.messaging.MessagingService;
+import etf.openpgp.mn170085d_dm170084d.messaging.MessagingUtils;
 import org.bouncycastle.bcpg.BCPGOutputStream;
 import org.bouncycastle.bcpg.HashAlgorithmTags;
 import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
@@ -9,6 +10,8 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.PGPDigestCalculator;
 import org.bouncycastle.openpgp.operator.jcajce.*;
+import org.bouncycastle.util.encoders.Base64;
+import org.bouncycastle.util.encoders.Base64Encoder;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -162,42 +165,63 @@ public class PGPTest {
         PGPPrivateKey priv1 = extractPrivateKey(skr1);
         PGPPrivateKey priv2 = extractPrivateKey(skr2);
 
-        byte[] data = {0x1, 0x2, 0x3};
+        String srcMessage = "/home/madi/Desktop/msg";
+        String dstMessage = "/home/madi/Desktop/";
 
-        byte[] signed = MessagingService.encodeArmoredStream(MessagingService.sign(data, priv1, skr1.getSecretKey().getPublicKey().getAlgorithm()));
-        PGPSecretKey secretKey = skr1.getSecretKey();
-        PGPPublicKey publicKey = secretKey.getPublicKey();
-        int algo = publicKey.getAlgorithm();
+        MessagingUtils.sendMessage(srcMessage, dstMessage, false, priv1, 3, false, pk2,
+                SymmetricKeyAlgorithmTags.AES_128, false, true);
 
-//
-//        System.out.println("Original Data");
-//        for (byte i : data)
-//            System.out.print(i);
-//        System.out.println();
-//
-//        System.out.println("Signed data");
-//        for (byte i : signed)
-//            System.out.print((char) i);
-//
-//        boolean verified = MessagingService.verifySignature(MessagingService.encodeArmoredStream(signed), pk1);
-//
-//        byte[] originalData = MessagingService.readSignedMessage(MessagingService.encodeArmoredStream(signed));
-//        System.out.println("Signature verified: " + verified);
-//        for(byte b : originalData)
-//            System.out.print(b);
-//        System.out.println();
+        String srcPath = "/home/madi/Desktop/encrypted.gpg";
+        FileInputStream fileStream = new FileInputStream(srcPath);
+        byte[] data = fileStream.readAllBytes();
+        fileStream.close();
 
-        byte[] base64 = MessagingService.encodeBase64(data);
+        byte[] decodedRadix;
+        byte[] decryptedData;
+        byte[] unzippedData;
+        boolean verified;
+        byte[] message;
 
-        System.out.println();
-        for(byte b : base64)
-            System.out.print(b);
-        System.out.println();
+        try {
+            decodedRadix = MessagingService.decodeArmoredStream(data);
+        } catch(Exception e)
+        {
+            decodedRadix = data;
+        }
 
-//        byte[] decrypted = MessagingService.decrypt(encrypted, priv1);
-//
-//        System.out.println("\nDecrypted data");
-//        for (byte i : decrypted)
-//            System.out.print(i);
+        if(MessagingService.isDataEncrypted(decodedRadix))
+        {
+            //TODO: Prompt za unos passworda i izvlacenje privatnog kljuca
+            decryptedData = MessagingService.decrypt(decodedRadix, priv2);
+        } else
+        {
+            decryptedData = decodedRadix;
+        }
+
+        try {
+            unzippedData = MessagingService.unzip(decryptedData);
+        } catch(Exception e)
+        {
+            unzippedData = decryptedData;
+        }
+
+        if(MessagingService.isDataSigned(unzippedData))
+        {
+            //TODO: Izvuci keyID iz potpisa i dohvati javni kljuc
+            verified = MessagingService.verifySignature(unzippedData, pk1);
+            if(verified)
+                System.out.println("Potpis je verifikovan");
+            else
+                System.out.println("Potpis nije verifikovan");
+            message = MessagingService.readSignedMessage(unzippedData);
+        } else {
+            System.out.println("Poruka nije potpisana");
+            message = unzippedData;
+        }
+
+        String dstPath = "/home/madi/Desktop/decrypted.dat";
+        FileOutputStream outputStream = new FileOutputStream(dstPath);
+        outputStream.write(message);
+        outputStream.close();
     }
 }

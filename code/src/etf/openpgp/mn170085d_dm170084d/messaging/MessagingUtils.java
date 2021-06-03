@@ -32,10 +32,11 @@ public class MessagingUtils {
             }
             if(isEncodedBase64)
             {
-                data = MessagingService.encodeBase64(data);
+                data = MessagingService.encodeArmoredStream(data);
             }
 
-            String fileName= "sentMessage_" + (new Date()).getTime() + ".dat";
+//            String fileName= "sentMessage_" + (new Date()).getTime() + ".gpg";
+            String fileName = "encrypted.gpg";
             File exportFile = new File(dstPath, fileName);
 
             FileOutputStream fileStream = new FileOutputStream(exportFile);
@@ -52,8 +53,15 @@ public class MessagingUtils {
             System.out.println("Greska pri potpisivanju");
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Greska pri enkripciji");
+            System.out.println("Greska pri enkripciji poruke");
             e.printStackTrace();
         }
     }
+
+//    public static void receiveMessage(String srcPath, String dstPath, boolean isSigned, PGPPublicKey verifyingKey,
+//                                      boolean isEncrypted, PGPPrivateKey decryptionKey,
+//                                      boolean isZipped, boolean isEncodedBase64)
+//    {
+//
+//    }
 }

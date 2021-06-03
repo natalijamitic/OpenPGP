@@ -78,6 +78,21 @@ public class MessagingService {
         return ((ByteArrayOutputStream)outputStream).toByteArray();
     }
 
+    public static boolean isDataEncrypted(byte[] data) {
+        try {
+            JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(data);
+            Object o = objectFactory.nextObject();
+
+            if (o instanceof PGPEncryptedDataList)
+                return true;
+            else
+                return false;
+        } catch (Exception e)
+        {
+            return false;
+        }
+    }
+
     public static byte[] decrypt(byte[] data, PGPPrivateKey privateKey) throws Exception {
         JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(data);
         Object o = objectFactory.nextObject();
@@ -117,6 +132,22 @@ public class MessagingService {
         byteStream.close();
         bcpgos.close();
         return byteStream.toByteArray();
+    }
+
+    public static boolean isDataSigned(byte[] data)
+    {
+        try {
+            JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(data);
+            Object o = null;
+            o = pgpFact.nextObject();
+
+            if(o instanceof PGPOnePassSignatureList)
+                return true;
+            else
+                return false;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     public static boolean verifySignature(byte[] pgpSignedData, PGPPublicKey verifyingKey) throws IOException, PGPException {

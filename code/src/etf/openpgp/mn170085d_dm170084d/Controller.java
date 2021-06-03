@@ -3,6 +3,7 @@ package etf.openpgp.mn170085d_dm170084d;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyGuiVisualisation;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyHelper;
 import etf.openpgp.mn170085d_dm170084d.keys.KeyReaderWriter;
+import etf.openpgp.mn170085d_dm170084d.messaging.MessagingService;
 import etf.openpgp.mn170085d_dm170084d.messaging.MessagingUtils;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
@@ -11,7 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.File;
+import java.io.*;
+import java.util.Date;
 import java.util.Iterator;
 
 import javafx.scene.layout.AnchorPane;
@@ -21,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.openpgp.*;
+import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
 public class Controller {
@@ -295,9 +298,112 @@ public class Controller {
     }
 
     public void receiveMessage() {
-        System.out.println("decrypt received Message");
-        this.encryptMessageMsg.setText("U toku je obrada primljene poruke..");
-        this.inboxDialog.setVisible(true);
+//        System.out.println("decrypt received Message");
+//        this.encryptMessageMsg.setText("U toku je obrada primljene poruke..");
+//        this.inboxDialog.setVisible(true);
+
+        String srcPath = this.inboxMessagePath.getText();
+        FileInputStream fileStream = null;
+        byte[] data = null;
+        try {
+            fileStream = new FileInputStream(srcPath);
+            data = fileStream.readAllBytes();
+            fileStream.close();
+        } catch (FileNotFoundException e) {
+            outboxLabel.setText("Greska pri otvaranju fajla");
+            return;
+        } catch (IOException e) {
+            outboxLabel.setText("Greska pri citanju fajla");
+            return;
+        }
+
+        byte[] decodedRadix = null;
+        byte[] decryptedData = null;
+        byte[] unzippedData = null;
+        boolean verified = false;
+        byte[] message = null;
+
+        try {
+            decodedRadix = MessagingService.decodeArmoredStream(data);
+        } catch(Exception e)
+        {
+            decodedRadix = data;
+        }
+
+        if(MessagingService.isDataEncrypted(decodedRadix))
+        {
+            //TODO: Prompt za unos passworda i izvlacenje privatnog kljuca
+//            Iterator<PGPSecretKey> secretKeys = skr.getSecretKeys();
+//            PGPSecretKey sk = secretKeys.next();
+//            sk = secretKeys.next();
+//            PGPPrivateKey privateKey = sk.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build("tajnasifra".toCharArray()));
+
+//            decryptedData = MessagingService.decrypt(decodedRadix, privateKey);
+        } else
+        {
+            decryptedData = decodedRadix;
+        }
+
+        try {
+            unzippedData = MessagingService.unzip(decryptedData);
+        } catch(Exception e)
+        {
+            unzippedData = decryptedData;
+        }
+
+        if(MessagingService.isDataSigned(unzippedData))
+        {
+            // Izvuci keyID iz potpisa i dohvati javni kljuc
+            JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(unzippedData);
+            Object o = null;
+            try {
+                o = objectFactory.nextObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            long signatureKeyId = -1;
+            if(o instanceof PGPOnePassSignatureList)
+            {
+                PGPOnePassSignatureList sl = (PGPOnePassSignatureList) o;
+                PGPOnePassSignature signature = sl.get(0);
+                signatureKeyId = signature.getKeyID();
+            }
+
+            PGPPublicKeyRing publicKeyRing = keyHelper.getPublicKeyRingById(signatureKeyId);
+            PGPPublicKey verifyingKey = keyHelper.extractPublicKey(publicKeyRing);
+
+            try {
+                verified = MessagingService.verifySignature(unzippedData, verifyingKey);
+            } catch (IOException e) {
+                outboxLabel.setText("Greska pri verifikaciji potpisa");
+            } catch (PGPException e) {
+                outboxLabel.setText("Greska pri verifikaciji potpisa");
+            }
+            if(verified)
+                System.out.println("Potpis je verifikovan");
+            else
+                System.out.println("Potpis nije verifikovan");
+            try {
+                message = MessagingService.readSignedMessage(unzippedData);
+            } catch (IOException e) {
+                outboxLabel.setText("Greska pri citanju originalne poruke");
+            }
+        } else {
+            System.out.println("Poruka nije potpisana");
+            message = unzippedData;
+        }
+
+        String dstPath = decryptedMessagePath.getText() + "/" + "decryptedMessage_" + (new Date()).getTime() + ".gpg";
+        try {
+            FileOutputStream outputStream = new FileOutputStream(dstPath);
+            outputStream.write(message);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
+        } catch (IOException e) {
+            outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
+        }
+
     }
 
     public void checkInboxMessagePrivateKey() {
