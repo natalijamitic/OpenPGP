@@ -204,7 +204,8 @@ public class KeyReaderWriter {
 
     private void openFileLocation(String path) throws IOException {
         if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().open(new File(path));
+            //nemoj natalija
+//            Desktop.getDesktop().open(new File(path));
         }
     }
 
