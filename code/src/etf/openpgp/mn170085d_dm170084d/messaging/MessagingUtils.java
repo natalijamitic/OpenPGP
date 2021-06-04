@@ -35,8 +35,8 @@ public class MessagingUtils {
                 data = MessagingService.encodeArmoredStream(data);
             }
 
-//            String fileName= "sentMessage_" + (new Date()).getTime() + ".gpg";
-            String fileName = "encrypted.gpg";
+            String fileName= "sentMessage_" + (new Date()).getTime() + ".gpg";
+//            String fileName = "encrypted.gpg";
             File exportFile = new File(dstPath, fileName);
 
             FileOutputStream fileStream = new FileOutputStream(exportFile);

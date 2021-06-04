@@ -398,6 +398,7 @@ public class Controller {
             FileOutputStream outputStream = new FileOutputStream(dstPath);
             outputStream.write(message);
             outputStream.close();
+            outboxLabel.setText("Poruka je uspesno desifrovana");
         } catch (FileNotFoundException e) {
             outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
         } catch (IOException e) {
@@ -471,21 +472,19 @@ public class Controller {
         ObservableList<KeyGuiVisualisation> pubKeys = this.outboxPublicKeys.getSelectionModel().getSelectedItems();
         PGPPublicKeyRing publicKeyRing = null;
         PGPPublicKey publicKey = null;
+        boolean isZipped = zipFlag.isSelected();
+        boolean isRadix = radixFlag.isSelected();
         if(isEncrypted)
         {
             for(KeyGuiVisualisation keyGui : pubKeys)
             {
                 long pubKeyId = keyGui.stringKeyIdToLong(keyGui.getId());
                 publicKeyRing = this.keyHelper.getPublicKeyRingById(pubKeyId);
-                break;
+                publicKey = this.keyHelper.extractPublicKey(publicKeyRing);
+                MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, isEncrypted, publicKey, encryptionAlgorithm, isZipped, isRadix);
+                outboxLabel.setText("Poruka je uspesno poslata");
             }
-            publicKey = this.keyHelper.extractPublicKey(publicKeyRing);
         }
-
-        boolean isZipped = zipFlag.isSelected();
-        boolean isRadix = radixFlag.isSelected();
-
-        MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, isEncrypted, publicKey, encryptionAlgorithm, isZipped, isRadix);
 
         System.out.println(srcPath + " " + dstPath + " " + isSigned + " " + signedKeyId + " " + signatureKeyPassword + " " + isEncrypted + " " + encryptionAlgo + " " + pubKeys + " " + isZipped + " " + isRadix);
     }
