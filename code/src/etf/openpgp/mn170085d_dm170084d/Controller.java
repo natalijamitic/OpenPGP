@@ -308,10 +308,10 @@ public class Controller {
             data = fileStream.readAllBytes();
             fileStream.close();
         } catch (FileNotFoundException e) {
-            outboxLabel.setText("Greska pri otvaranju fajla");
+            encryptMessageMsg.setText("Greska pri otvaranju fajla");
             return;
         } catch (IOException e) {
-            outboxLabel.setText("Greska pri citanju fajla");
+            encryptMessageMsg.setText("Greska pri citanju fajla");
             return;
         }
 
@@ -331,14 +331,39 @@ public class Controller {
         if(MessagingService.isDataEncrypted(decodedRadix))
         {
             PasswordPrompt prompt = new PasswordPrompt(this.outboxLabel.getScene().getWindow());
-            String encryptonPassword = prompt.getResult();
-            System.out.println(encryptonPassword);
-//            Iterator<PGPSecretKey> secretKeys = skr.getSecretKeys();
-//            PGPSecretKey sk = secretKeys.next();
-//            sk = secretKeys.next();
-//            PGPPrivateKey privateKey = sk.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build("tajnasifra".toCharArray()));
+            String encryptionPassword = prompt.getResult();
+            System.out.println(encryptionPassword);
 
-//            decryptedData = MessagingService.decrypt(decodedRadix, privateKey);
+            try {
+                JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(decodedRadix);
+                Object object= objectFactory.nextObject();
+
+                if(object instanceof PGPEncryptedDataList)
+                {
+                    PGPEncryptedDataList edl = (PGPEncryptedDataList) object;
+                    Iterator<PGPEncryptedData> encryptedDataObjects = edl.getEncryptedDataObjects();
+                    PGPPublicKeyEncryptedData encryptedData = (PGPPublicKeyEncryptedData) encryptedDataObjects.next();
+
+                    PGPSecretKey secretKey = keyHelper.getSecretKeyById(encryptedData.getKeyID());
+                    PGPPrivateKey privateKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder()
+                            .setProvider("BC").build(encryptionPassword.toCharArray()));
+
+                    decryptedData = MessagingService.decrypt(decodedRadix, privateKey);
+                } else
+                {
+                    encryptMessageMsg.setText("Greska pri dekripciji 1");
+                    return;
+                }
+            } catch (IOException e) {
+                encryptMessageMsg.setText("Greska pri dekripciji 2");
+                return;
+            } catch (PGPException e) {
+                encryptMessageMsg.setText("Greska pri dekripciji - pogresna lozinka");
+                return;
+            } catch (Exception e) {
+                encryptMessageMsg.setText("Greska pri dekripciji 3");
+                return;
+            }
         } else
         {
             decryptedData = decodedRadix;
@@ -375,9 +400,11 @@ public class Controller {
             try {
                 verified = MessagingService.verifySignature(unzippedData, verifyingKey);
             } catch (IOException e) {
-                outboxLabel.setText("Greska pri verifikaciji potpisa");
+                encryptMessageMsg.setText("Greska pri verifikaciji potpisa");
+                return;
             } catch (PGPException e) {
-                outboxLabel.setText("Greska pri verifikaciji potpisa");
+                encryptMessageMsg.setText("Greska pri verifikaciji potpisa");
+                return;
             }
             if(verified)
                 System.out.println("Potpis je verifikovan");
@@ -386,7 +413,8 @@ public class Controller {
             try {
                 message = MessagingService.readSignedMessage(unzippedData);
             } catch (IOException e) {
-                outboxLabel.setText("Greska pri citanju originalne poruke");
+                encryptMessageMsg.setText("Greska pri citanju originalne poruke");
+                return;
             }
         } else {
             System.out.println("Poruka nije potpisana");
@@ -398,11 +426,13 @@ public class Controller {
             FileOutputStream outputStream = new FileOutputStream(dstPath);
             outputStream.write(message);
             outputStream.close();
-            outboxLabel.setText("Poruka je uspesno desifrovana");
+            encryptMessageMsg.setText("Poruka je uspesno desifrovana");
         } catch (FileNotFoundException e) {
-            outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
+            encryptMessageMsg.setText("Greska pri cuvanju dekriptovane poruke");
+            return;
         } catch (IOException e) {
-            outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
+            encryptMessageMsg.setText("Greska pri cuvanju dekriptovane poruke");
+            return;
         }
 
     }
