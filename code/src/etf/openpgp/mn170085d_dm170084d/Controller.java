@@ -298,9 +298,7 @@ public class Controller {
     }
 
     public void receiveMessage() {
-//        System.out.println("decrypt received Message");
-//        this.encryptMessageMsg.setText("U toku je obrada primljene poruke..");
-//        this.inboxDialog.setVisible(true);
+        String password = inboxMessagePrivateKey.getText();
 
         String srcPath = this.inboxMessagePath.getText();
         FileInputStream fileStream = null;
@@ -332,7 +330,9 @@ public class Controller {
 
         if(MessagingService.isDataEncrypted(decodedRadix))
         {
-            //TODO: Prompt za unos passworda i izvlacenje privatnog kljuca
+            PasswordPrompt prompt = new PasswordPrompt(this.outboxLabel.getScene().getWindow());
+            String encryptonPassword = prompt.getResult();
+            System.out.println(encryptonPassword);
 //            Iterator<PGPSecretKey> secretKeys = skr.getSecretKeys();
 //            PGPSecretKey sk = secretKeys.next();
 //            sk = secretKeys.next();
