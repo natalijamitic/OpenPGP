@@ -1,7 +1,5 @@
 package etf.openpgp.mn170085d_dm170084d;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,7 +12,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 public class PasswordPrompt {
-    private final String result;
+    private String result = "";
 
     PasswordPrompt(Window owner) {
         final Stage dialog = new Stage();
