@@ -398,6 +398,7 @@ public class Controller {
             FileOutputStream outputStream = new FileOutputStream(dstPath);
             outputStream.write(message);
             outputStream.close();
+            outboxLabel.setText("Poruka je uspesno desifrovana");
         } catch (FileNotFoundException e) {
             outboxLabel.setText("Greska pri cuvanju dekriptovane poruke");
         } catch (IOException e) {
