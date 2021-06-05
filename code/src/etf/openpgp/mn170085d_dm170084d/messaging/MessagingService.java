@@ -67,7 +67,7 @@ public class MessagingService {
             throw new Exception("No data was provided for encryption");
 
         PGPEncryptedDataGenerator encryptionGenerator = new PGPEncryptedDataGenerator(
-                new JcePGPDataEncryptorBuilder(algorithm).setSecureRandom(new SecureRandom()).setProvider("BC"));
+                new JcePGPDataEncryptorBuilder(algorithm).setWithIntegrityPacket(true).setSecureRandom(new SecureRandom()).setProvider("BC"));
         encryptionGenerator.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(publicKey).setProvider("BC"));
 
         OutputStream encryptedOutputStream = encryptionGenerator.open(outputStream, data.length);

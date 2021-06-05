@@ -20,7 +20,7 @@ public class MessagingUtils {
 
             if(isSigned)
             {
-                data = MessagingService.sign(data, signingKey, 3);
+                data = MessagingService.sign(data, signingKey, signingAlgorithm);
             }
             if(isZipped)
             {

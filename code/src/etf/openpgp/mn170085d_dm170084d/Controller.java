@@ -499,6 +499,7 @@ public class Controller {
             try {
                 signingKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(signatureKeyPassword.toCharArray()));
                 signingAlgorithm = secretKey.getPublicKey().getAlgorithm();
+                System.out.println("ALGO: " + signingAlgorithm);
             } catch (PGPException e) {
                 outboxLabel.setText("Pogresna sifra privatnog kljuca za potpisivanje");
                 return;
@@ -539,6 +540,8 @@ public class Controller {
         } else
         {
             MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, false, null, -1, isZipped, isRadix);
+            outboxLabel.setText("Poruka je uspesno poslata");
+            clearSendScreen();
         }
 
         System.out.println(srcPath + " " + dstPath + " " + isSigned + " " + signedKeyId + " " + signatureKeyPassword + " " + isEncrypted + " " + encryptionAlgo + " " + pubKeys + " " + isZipped + " " + isRadix);
