@@ -156,72 +156,7 @@ public class PGPTest {
         Security.addProvider(new BouncyCastleProvider());
 
 
-        PGPSecretKeyRing skr1 = getSecretKeyRing();
-        PGPSecretKeyRing skr2 = getSecretKeyRing();
-
-        PGPPublicKey pk1 = extractPublicKey(skr1);
-        PGPPublicKey pk2 = extractPublicKey(skr2);
-
-        PGPPrivateKey priv1 = extractPrivateKey(skr1);
-        PGPPrivateKey priv2 = extractPrivateKey(skr2);
-
-        String srcMessage = "/home/madi/Desktop/msg";
-        String dstMessage = "/home/madi/Desktop/";
-
-        MessagingUtils.sendMessage(srcMessage, dstMessage, false, priv1, 3, false, pk2,
-                SymmetricKeyAlgorithmTags.AES_128, false, true);
-
-        String srcPath = "/home/madi/Desktop/encrypted.gpg";
-        FileInputStream fileStream = new FileInputStream(srcPath);
-        byte[] data = fileStream.readAllBytes();
-        fileStream.close();
-
-        byte[] decodedRadix;
-        byte[] decryptedData;
-        byte[] unzippedData;
-        boolean verified;
-        byte[] message;
-
-        try {
-            decodedRadix = MessagingService.decodeArmoredStream(data);
-        } catch(Exception e)
-        {
-            decodedRadix = data;
-        }
-
-        if(MessagingService.isDataEncrypted(decodedRadix))
-        {
-            //TODO: Prompt za unos passworda i izvlacenje privatnog kljuca
-            decryptedData = MessagingService.decrypt(decodedRadix, priv2);
-        } else
-        {
-            decryptedData = decodedRadix;
-        }
-
-        try {
-            unzippedData = MessagingService.unzip(decryptedData);
-        } catch(Exception e)
-        {
-            unzippedData = decryptedData;
-        }
-
-        if(MessagingService.isDataSigned(unzippedData))
-        {
-            //TODO: Izvuci keyID iz potpisa i dohvati javni kljuc
-            verified = MessagingService.verifySignature(unzippedData, pk1);
-            if(verified)
-                System.out.println("Potpis je verifikovan");
-            else
-                System.out.println("Potpis nije verifikovan");
-            message = MessagingService.readSignedMessage(unzippedData);
-        } else {
-            System.out.println("Poruka nije potpisana");
-            message = unzippedData;
-        }
-
-        String dstPath = "/home/madi/Desktop/decrypted.dat";
-        FileOutputStream outputStream = new FileOutputStream(dstPath);
-        outputStream.write(message);
-        outputStream.close();
+        String s = "Ë}b »Ã";
+        char[] shit = s.toCharArray();
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -420,8 +421,13 @@ public class Controller {
                 return;
             }
         } else {
+
             System.out.println("Poruka nije potpisana");
             message = unzippedData;
+            if(message[0] == 203 && message[5] == 187)
+            {
+                message = Arrays.copyOfRange(message, 8, message.length);
+            }
         }
 
         String dstPath = decryptedMessagePath.getText() + "/" + "decryptedMessage_" + (new Date()).getTime() + ".gpg";
