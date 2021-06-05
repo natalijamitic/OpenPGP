@@ -393,18 +393,11 @@ public class Controller {
                 e.printStackTrace();
             }
             long signatureKeyId = -1;
-            boolean zeroPass = false;
             if(o instanceof PGPOnePassSignatureList)
             {
                 PGPOnePassSignatureList sl = (PGPOnePassSignatureList) o;
                 PGPOnePassSignature signature = sl.get(0);
                 signatureKeyId = signature.getKeyID();
-            } else if (o instanceof PGPSignatureList)
-            {
-                PGPSignatureList sl = (PGPSignatureList) o;
-                PGPSignature signature = sl.get(0);
-                signatureKeyId = signature.getKeyID();
-                zeroPass = true;
             }
 
             PGPPublicKeyRing publicKeyRing = keyHelper.getPublicKeyRingById(signatureKeyId);
@@ -413,7 +406,7 @@ public class Controller {
             PGPPublicKey verifyingKey = this.keyHelper.extractMasterPublicKey(publicKeyRing); // keyHelper.extractPublicKey(publicKeyRing);
 
             try {
-                verified = zeroPass ? MessagingService.verifySignatureZeroPass(unzippedData, verifyingKey) : MessagingService.verifySignature(unzippedData, verifyingKey);
+                verified = MessagingService.verifySignature(unzippedData, verifyingKey);
             } catch (IOException e) {
                 encryptMessageMsg.setText("Greska pri verifikaciji potpisa");
                 return;
