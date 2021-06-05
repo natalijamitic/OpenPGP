@@ -219,6 +219,14 @@ public class KeyReaderWriter {
             Iterator<PGPPublicKey> keyIterator = publicKeyRing.getPublicKeys();
             PGPPublicKey masterKey = keyIterator.next();
 
+            // za kleopatru provera
+            if (masterKey.getKeyID() == idToGet) {
+                List<PGPPublicKey> publicKeysList = new LinkedList<>();
+                publicKeysList.add(masterKey);
+                publicKeysList.add(keyIterator.next());
+                return new PGPPublicKeyRing(publicKeysList);
+            }
+
             // One master key can have multiple sub keys.
             while (keyIterator.hasNext()) {
                 PGPPublicKey subKey = keyIterator.next();
@@ -242,6 +250,14 @@ public class KeyReaderWriter {
             secretKeyRing = iterator2.next();
             Iterator<PGPPublicKey> keyIterator = secretKeyRing.getPublicKeys();
             PGPPublicKey masterKey = keyIterator.next();
+
+            // za kleopatru provera
+            if (masterKey.getKeyID() == idToGet) {
+                List<PGPPublicKey> publicKeysList = new LinkedList<>();
+                publicKeysList.add(masterKey);
+                publicKeysList.add(keyIterator.next());
+                return new PGPPublicKeyRing(publicKeysList);
+            }
 
             while (keyIterator.hasNext()) {
                 PGPPublicKey subKey = keyIterator.next();
