@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/pubs.asc" beforeDir="false" afterPath="$PROJECT_DIR$/pubs.asc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingUtils.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="212" column="50" lean-forward="true" selection-start-line="212" selection-start-column="50" selection-end-line="212" selection-end-column="50" />
+            <state relative-caret-position="-69">
+              <caret line="211" column="28" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getSecretKeyRingForID#0;class#KeyReaderWriter#0" />
@@ -101,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/PGPTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="247">
-              <caret line="176" column="27" lean-forward="true" selection-start-line="176" selection-start-column="27" selection-end-line="176" selection-end-column="27" />
+              <caret line="160" column="5" lean-forward="true" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -109,8 +108,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="69" column="72" lean-forward="true" selection-start-line="69" selection-start-column="72" selection-end-line="69" selection-end-column="72" />
+            <state relative-caret-position="168">
+              <caret line="173" column="5" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
               <folding>
                 <element signature="e#2067#2068#0" expanded="true" />
                 <element signature="e#2109#2110#0" expanded="true" />
@@ -121,40 +120,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="518" column="34" selection-start-line="518" selection-start-column="34" selection-end-line="518" selection-end-column="34" />
+              <caret line="419" column="38" lean-forward="true" selection-start-line="419" selection-start-column="38" selection-end-line="419" selection-end-column="38" />
               <folding>
-                <element signature="e#15416#17065#1" />
+                <element signature="e#13393#15226#1" />
                 <element signature="e#17286#17287#0" expanded="true" />
                 <element signature="e#17336#17337#0" expanded="true" />
-                <element signature="e#24502#24503#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="85" column="46" selection-start-line="85" selection-start-column="24" selection-end-line="85" selection-end-column="46" />
-              <folding>
-                <element signature="e#1825#1826#0" expanded="true" />
-                <element signature="e#1894#1895#0" expanded="true" />
-                <element signature="e#2117#2118#0" expanded="true" />
-                <element signature="e#2184#2185#0" expanded="true" />
+                <element signature="e#25378#25379#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -171,7 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>build</find>
       <find>algorithm</find>
       <find>dummy</find>
       <find>tableView</find>
@@ -197,9 +171,10 @@
       <find>armoredou</find>
       <find>izmena</find>
       <find>poruka ni</find>
-      <find>export</find>
       <find>CONSOL</find>
       <find>came</find>
+      <find>greska pri de</find>
+      <find>export</find>
       <find>encryptorB</find>
     </findStrings>
   </component>
@@ -233,8 +208,8 @@
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/PGPTest.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingUtils.java" />
-        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java" />
         <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java" />
+        <option value="$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java" />
       </list>
     </option>
   </component>
@@ -315,7 +290,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1622891229212" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1622894734463" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
@@ -520,16 +495,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Image Layers" order="0" />
       <window_info id="UI Designer" order="1" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.6703755" visible="true" weight="0.22751679" />
+      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.6703755" weight="0.22751679" />
       <window_info id="Structure" order="5" weight="0.24966443" />
       <window_info id="Favorites" order="6" weight="0.3295302" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Terminal" order="0" weight="0.3286119" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="3" weight="0.31303117" />
@@ -556,6 +530,41 @@
       <window_info anchor="right" id="Maven Projects" order="9" />
       <window_info anchor="right" id="Ant Build" order="10" weight="0.24966443" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Image Layers" order="0" />
+      <window_info id="UI Designer" order="1" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info content_ui="combo" id="Project" order="4" sideWeight="0.6703755" visible="true" weight="0.22751679" />
+      <window_info id="Structure" order="5" weight="0.24966443" />
+      <window_info id="Favorites" order="6" weight="0.3295302" />
+      <window_info anchor="bottom" id="Terminal" order="0" weight="0.3286119" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.3286119" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.31303117" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.39943343" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3286119" />
+      <window_info anchor="bottom" id="Application Servers" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Problems" order="10" />
+      <window_info anchor="bottom" id="Changes" order="11" />
+      <window_info anchor="bottom" id="Profiler" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="13" />
+      <window_info anchor="bottom" id="Messages" order="14" weight="0.25070822" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Palette&#9;" order="1" />
+      <window_info anchor="right" id="Theme Preview" order="2" />
+      <window_info anchor="right" id="Maven" order="3" weight="0.3295302" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
+      <window_info anchor="right" id="JetGradle" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="right" id="Palette" order="8" />
+      <window_info anchor="right" id="Maven Projects" order="9" />
+      <window_info anchor="right" id="Ant Build" order="10" weight="0.24966443" />
+    </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
@@ -917,34 +926,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="85" column="46" selection-start-line="85" selection-start-column="24" selection-end-line="85" selection-end-column="46" />
-          <folding>
-            <element signature="e#1825#1826#0" expanded="true" />
-            <element signature="e#1894#1895#0" expanded="true" />
-            <element signature="e#2117#2118#0" expanded="true" />
-            <element signature="e#2184#2185#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="212" column="50" lean-forward="true" selection-start-line="212" selection-start-column="50" selection-end-line="212" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getSecretKeyRingForID#0;class#KeyReaderWriter#0" />
-            <element signature="method#deleteKey#0;class#KeyReaderWriter#0" />
-            <element signature="method#deletePublicKey#0;class#KeyReaderWriter#0" />
-            <element signature="method#deletePrivateKey#0;class#KeyReaderWriter#0" />
-            <element signature="method#checkSubKeyWithPassphrase#0;class#KeyReaderWriter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../bcpg-jdk15on-168.jar!/org/bouncycastle/openpgp/PGPLiteralDataGenerator.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -962,39 +943,81 @@
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/PGPTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
-          <caret line="176" column="27" lean-forward="true" selection-start-line="176" selection-start-column="27" selection-end-line="176" selection-end-column="27" />
+          <caret line="160" column="5" lean-forward="true" selection-start-line="160" selection-start-column="5" selection-end-line="160" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyReaderWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-69">
+          <caret line="211" column="28" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getSecretKeyRingForID#0;class#KeyReaderWriter#0" />
+            <element signature="method#deleteKey#0;class#KeyReaderWriter#0" />
+            <element signature="method#deletePublicKey#0;class#KeyReaderWriter#0" />
+            <element signature="method#deletePrivateKey#0;class#KeyReaderWriter#0" />
+            <element signature="method#checkSubKeyWithPassphrase#0;class#KeyReaderWriter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/keys/KeyHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+          <folding>
+            <element signature="e#1825#1826#0" expanded="true" />
+            <element signature="e#1894#1895#0" expanded="true" />
+            <element signature="e#2117#2118#0" expanded="true" />
+            <element signature="e#2184#2185#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+        <state relative-caret-position="238">
+          <caret line="22" column="69" selection-start-line="22" selection-start-column="69" selection-end-line="22" selection-end-column="69" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java">
+    <entry file="jar://$PROJECT_DIR$/../bcpg-jdk15on-168.jar!/org/bouncycastle/openpgp/PGPOnePassSignatureList.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="69" column="72" lean-forward="true" selection-start-line="69" selection-start-column="72" selection-end-line="69" selection-end-column="72" />
-          <folding>
-            <element signature="e#2067#2068#0" expanded="true" />
-            <element signature="e#2109#2110#0" expanded="true" />
-            <element signature="e#2167#2168#0" expanded="true" />
-            <element signature="e#2209#2210#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="518" column="34" selection-start-line="518" selection-start-column="34" selection-end-line="518" selection-end-column="34" />
+          <caret line="419" column="38" lean-forward="true" selection-start-line="419" selection-start-column="38" selection-end-line="419" selection-end-column="38" />
           <folding>
-            <element signature="e#15416#17065#1" />
+            <element signature="e#13393#15226#1" />
             <element signature="e#17286#17287#0" expanded="true" />
             <element signature="e#17336#17337#0" expanded="true" />
-            <element signature="e#24502#24503#0" expanded="true" />
+            <element signature="e#25378#25379#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../bcpg-jdk15on-168.jar!/org/bouncycastle/openpgp/PGPSignatureList.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/etf/openpgp/mn170085d_dm170084d/messaging/MessagingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="173" column="5" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+          <folding>
+            <element signature="e#2067#2068#0" expanded="true" />
+            <element signature="e#2109#2110#0" expanded="true" />
+            <element signature="e#2167#2168#0" expanded="true" />
+            <element signature="e#2209#2210#0" expanded="true" />
           </folding>
         </state>
       </provider>

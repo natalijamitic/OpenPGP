@@ -347,6 +347,10 @@ public class Controller {
 
                     // IZMENA
                     PGPSecretKey secretKey = keyHelper.getAnySecretKeyById(encryptedData.getKeyID()); // keyHelper.getSecretKeyById(encryptedData.getKeyID());
+                    if (secretKey == null){
+                        encryptMessageMsg.setText("Greska pri dekripciji. Nije za Vas enkriptovana poruka.");
+                        return;
+                    }
                     PGPPrivateKey privateKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder()
                             .setProvider("BC").build(encryptionPassword.toCharArray()));
 
@@ -389,11 +393,18 @@ public class Controller {
                 e.printStackTrace();
             }
             long signatureKeyId = -1;
+            boolean zeroPass = false;
             if(o instanceof PGPOnePassSignatureList)
             {
                 PGPOnePassSignatureList sl = (PGPOnePassSignatureList) o;
                 PGPOnePassSignature signature = sl.get(0);
                 signatureKeyId = signature.getKeyID();
+            } else if (o instanceof PGPSignatureList)
+            {
+                PGPSignatureList sl = (PGPSignatureList) o;
+                PGPSignature signature = sl.get(0);
+                signatureKeyId = signature.getKeyID();
+                zeroPass = true;
             }
 
             PGPPublicKeyRing publicKeyRing = keyHelper.getPublicKeyRingById(signatureKeyId);
@@ -402,7 +413,7 @@ public class Controller {
             PGPPublicKey verifyingKey = this.keyHelper.extractMasterPublicKey(publicKeyRing); // keyHelper.extractPublicKey(publicKeyRing);
 
             try {
-                verified = MessagingService.verifySignature(unzippedData, verifyingKey);
+                verified = zeroPass ? MessagingService.verifySignatureZeroPass(unzippedData, verifyingKey) : MessagingService.verifySignature(unzippedData, verifyingKey);
             } catch (IOException e) {
                 encryptMessageMsg.setText("Greska pri verifikaciji potpisa");
                 return;
@@ -424,8 +435,13 @@ public class Controller {
 
             System.out.println("Poruka nije potpisana");
             message = unzippedData;
-            if(message[0] == 203 && message[5] == 187)
+            System.out.println(message[0]);
+            System.out.println(message[5]);
+            if(message[0] == -53 && message[5] == -69)
             {
+
+                System.out.println("uso");
+
                 message = Arrays.copyOfRange(message, 8, message.length);
             }
         }

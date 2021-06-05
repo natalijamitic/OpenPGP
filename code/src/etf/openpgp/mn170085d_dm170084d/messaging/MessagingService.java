@@ -140,7 +140,9 @@ public class MessagingService {
             JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(data);
             Object o = null;
             o = pgpFact.nextObject();
-
+            if (o instanceof  PGPSignatureList) {
+                return true;
+            }
             if(o instanceof PGPOnePassSignatureList)
                 return true;
             else
