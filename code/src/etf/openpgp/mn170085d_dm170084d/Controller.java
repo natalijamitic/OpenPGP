@@ -514,6 +514,9 @@ public class Controller {
                 MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, isEncrypted, publicKey, encryptionAlgorithm, isZipped, isRadix);
                 outboxLabel.setText("Poruka je uspesno poslata");
             }
+        } else
+        {
+            MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, false, null, -1, isZipped, isRadix);
         }
 
         System.out.println(srcPath + " " + dstPath + " " + isSigned + " " + signedKeyId + " " + signatureKeyPassword + " " + isEncrypted + " " + encryptionAlgo + " " + pubKeys + " " + isZipped + " " + isRadix);
