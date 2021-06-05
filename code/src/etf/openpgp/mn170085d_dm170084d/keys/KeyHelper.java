@@ -62,6 +62,18 @@ public class KeyHelper {
         PGPSecretKey secretKey = this.keyReaderWriter.getSecretSubKeyByID(Id);
         return secretKey;
     }
+    public PGPSecretKey getAnySecretKeyById(long Id) {
+        return this.keyReaderWriter.getAnySecretKeyById(Id);
+    }
+
+    public PGPSecretKey getMasterSecreyKeyBySubKeyId(long Id) {
+        PGPSecretKey secretSubKey = this.keyReaderWriter.getSecretMasterKeyBySubKeyId(Id);
+        return secretSubKey;
+    }
+
+    public PGPSecretKey getMasterSecretKeyByMasterKeyId(long Id) {
+        return this.keyReaderWriter.getSecretMasterKeyByMasterKeyId(Id);
+    }
 
     public PGPPublicKey extractPublicKey(PGPPublicKeyRing publicKeyRing)
     {
@@ -69,6 +81,12 @@ public class KeyHelper {
         PGPPublicKey publicKey = publicKeys.next();
         publicKey = publicKeys.next();
         return publicKey;
+    }
+
+    public PGPPublicKey extractMasterPublicKey(PGPPublicKeyRing publicKeyRing)
+    {
+        Iterator<PGPPublicKey> publicKeys = publicKeyRing.getPublicKeys();
+        return publicKeys.next();
     }
 
 

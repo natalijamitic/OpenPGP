@@ -344,7 +344,8 @@ public class Controller {
                     Iterator<PGPEncryptedData> encryptedDataObjects = edl.getEncryptedDataObjects();
                     PGPPublicKeyEncryptedData encryptedData = (PGPPublicKeyEncryptedData) encryptedDataObjects.next();
 
-                    PGPSecretKey secretKey = keyHelper.getSecretKeyById(encryptedData.getKeyID());
+                    // IZMENA
+                    PGPSecretKey secretKey = keyHelper.getAnySecretKeyById(encryptedData.getKeyID()); // keyHelper.getSecretKeyById(encryptedData.getKeyID());
                     PGPPrivateKey privateKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder()
                             .setProvider("BC").build(encryptionPassword.toCharArray()));
 
@@ -395,7 +396,9 @@ public class Controller {
             }
 
             PGPPublicKeyRing publicKeyRing = keyHelper.getPublicKeyRingById(signatureKeyId);
-            PGPPublicKey verifyingKey = keyHelper.extractPublicKey(publicKeyRing);
+
+            // IZMENA
+            PGPPublicKey verifyingKey = this.keyHelper.extractMasterPublicKey(publicKeyRing); // keyHelper.extractPublicKey(publicKeyRing);
 
             try {
                 verified = MessagingService.verifySignature(unzippedData, verifyingKey);
@@ -491,7 +494,8 @@ public class Controller {
                 return;
             }
             signedKeyId = this.stringKeyIdToLong(signatureKeyId.getText());
-            PGPSecretKey secretKey = this.keyHelper.getSecretKeyById(signedKeyId);
+            // IZMENA
+            PGPSecretKey secretKey = this.keyHelper.getMasterSecreyKeyBySubKeyId(signedKeyId);// this.keyHelper.getSecretKeyById(signedKeyId);
             try {
                 signingKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(signatureKeyPassword.toCharArray()));
                 signingAlgorithm = secretKey.getPublicKey().getAlgorithm();

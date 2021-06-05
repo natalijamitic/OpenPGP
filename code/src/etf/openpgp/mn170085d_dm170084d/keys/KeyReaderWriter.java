@@ -51,7 +51,7 @@ public class KeyReaderWriter {
             }
             this.privateKeys.encode(secretOut);
             return true;
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("duplo");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class KeyReaderWriter {
             this.publicKeys.encode(secretOut);
             System.out.println("sacuvano");
             return true;
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("duplo");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -171,7 +171,7 @@ public class KeyReaderWriter {
 //            return false;
 //        }
 
-        String fileName= "privateKeyExported_" + (new Date()).getTime() + ".asc";
+        String fileName = "privateKeyExported_" + (new Date()).getTime() + ".asc";
         File exportFile = new File(parentPath, fileName);
 
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(exportFile))) {
@@ -187,7 +187,7 @@ public class KeyReaderWriter {
     }
 
     public boolean exportPublicKey(String parentPath, long id) {
-        String fileName= "publicKeyExported_" + (new Date()).getTime() + ".asc";
+        String fileName = "publicKeyExported_" + (new Date()).getTime() + ".asc";
         File exportFile = new File(parentPath, fileName);
 
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(exportFile))) {
@@ -245,8 +245,7 @@ public class KeyReaderWriter {
         PGPSecretKeyRingCollection pgpPrivateKeyRingCollection = this.privateKeys;
         Iterator<PGPSecretKeyRing> iterator2 = pgpPrivateKeyRingCollection.getKeyRings();
         PGPSecretKeyRing secretKeyRing;
-        while (iterator2.hasNext())
-        {
+        while (iterator2.hasNext()) {
             secretKeyRing = iterator2.next();
             Iterator<PGPPublicKey> keyIterator = secretKeyRing.getPublicKeys();
             PGPPublicKey masterKey = keyIterator.next();
@@ -263,8 +262,7 @@ public class KeyReaderWriter {
                 PGPPublicKey subKey = keyIterator.next();
                 long id = subKey.getKeyID();
 
-                if (id == idToGet)
-                {
+                if (id == idToGet) {
                     List<PGPPublicKey> publicKeysList = new LinkedList<>();
                     publicKeysList.add(masterKey);
                     publicKeysList.add(subKey);
@@ -296,6 +294,76 @@ public class KeyReaderWriter {
             }
         }
 
+        return null;
+    }
+
+    public PGPSecretKey getAnySecretKeyById(long idToGet) {
+        PGPSecretKeyRing secretKeyRing;
+        Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
+
+        while (iterator.hasNext()) {
+            secretKeyRing = iterator.next();
+            Iterator<PGPSecretKey> keyIterator = secretKeyRing.getSecretKeys();
+            PGPSecretKey masterKey = keyIterator.next();
+
+            if (masterKey.getKeyID() == idToGet) {
+                return masterKey;
+            }
+            // One master key can have multiple sub keys.
+            while (keyIterator.hasNext()) {
+                PGPSecretKey subKey = keyIterator.next();   // returns the key id of the public key (this we need)
+
+                long id = subKey.getKeyID();
+
+                if (id == idToGet) {
+                    return subKey;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    public PGPSecretKey getSecretMasterKeyBySubKeyId(long idToGet) {
+        PGPSecretKeyRing secretKeyRing;
+        Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
+
+        while (iterator.hasNext()) {
+            secretKeyRing = iterator.next();
+            Iterator<PGPSecretKey> keyIterator = secretKeyRing.getSecretKeys();
+            PGPSecretKey masterKey = keyIterator.next();
+
+            // One master key can have multiple sub keys.
+            while (keyIterator.hasNext()) {
+                PGPSecretKey subKey = keyIterator.next();   // returns the key id of the public key (this we need)
+
+                long id = subKey.getKeyID();
+
+                if (id == idToGet) {
+                    return masterKey;
+                }
+            }
+        }
+
+
+        return null;
+    }
+
+    public PGPSecretKey getSecretMasterKeyByMasterKeyId(long idToGet) {
+        PGPSecretKeyRing secretKeyRing;
+        Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
+
+        while (iterator.hasNext()) {
+            secretKeyRing = iterator.next();
+            Iterator<PGPSecretKey> keyIterator = secretKeyRing.getSecretKeys();
+            PGPSecretKey masterKey = keyIterator.next();
+
+            if (masterKey.getKeyID() == idToGet) {
+                return masterKey;
+            }
+
+        }
 
         return null;
     }
@@ -309,7 +377,6 @@ public class KeyReaderWriter {
         }
         return secretKeyRing;
     }
-
 
 
     public boolean deleteKey(long idToDelete, String password) {
