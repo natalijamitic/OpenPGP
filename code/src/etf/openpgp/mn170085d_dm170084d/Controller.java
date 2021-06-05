@@ -462,6 +462,19 @@ public class Controller {
     /**********************************************
      *                  SLANJE                    *
      **********************************************/
+    private void clearSendScreen() {
+        outboxMessagePath.clear();
+        outboxLocationPath.clear();
+        signatureFlag.setSelected(false);
+        signatureKeyPass.clear();
+        signatureKeyId.clear();
+        outboxLabel.setText("");
+        encryptonFlag.setSelected(false);
+        outboxEncryptonAlgorithms.getSelectionModel().clearSelection();
+        zipFlag.setSelected(false);
+        radixFlag.setSelected(false);
+    }
+
     public void sendMessage() {
         //srcPath, dstPath, isSigned, signingKey
         String srcPath = outboxMessagePath.getText();
@@ -490,7 +503,7 @@ public class Controller {
 
         boolean isEncrypted = encryptonFlag.isSelected();
         String encryptionAlgo = this.outboxEncryptonAlgorithms.getSelectionModel().getSelectedItem();
-        if (isEncrypted && encryptionAlgo == null) {
+        if (isEncrypted && (encryptionAlgo == null || encryptionAlgo.length() == 0)) {
             outboxLabel.setText("Za izabranu enkripciju nisu popunjena sva polja.");
             return;
         }
@@ -500,6 +513,10 @@ public class Controller {
         else
             encryptionAlgorithm = SymmetricKeyAlgorithmTags.AES_128;
         ObservableList<KeyGuiVisualisation> pubKeys = this.outboxPublicKeys.getSelectionModel().getSelectedItems();
+        if (isEncrypted && (pubKeys == null || pubKeys.size() == 0)) {
+            outboxLabel.setText("Za izabranu enkripciju nisu popunjena sva polja.");
+            return;
+        }
         PGPPublicKeyRing publicKeyRing = null;
         PGPPublicKey publicKey = null;
         boolean isZipped = zipFlag.isSelected();
@@ -513,6 +530,7 @@ public class Controller {
                 publicKey = this.keyHelper.extractPublicKey(publicKeyRing);
                 MessagingUtils.sendMessage(srcPath, dstPath, isSigned, signingKey, signingAlgorithm, isEncrypted, publicKey, encryptionAlgorithm, isZipped, isRadix);
                 outboxLabel.setText("Poruka je uspesno poslata");
+                clearSendScreen();
             }
         }
 
