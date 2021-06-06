@@ -355,6 +355,8 @@ public class Controller {
                             .setProvider("BC").build(encryptionPassword.toCharArray()));
 
                     decryptedData = MessagingService.decrypt(decodedRadix, privateKey);
+
+                    new TextPrompt(this.outboxLabel.getScene().getWindow(), "Uspesno dekriptovana poruka.");
                 } else
                 {
                     encryptMessageMsg.setText("Greska pri dekripciji 1");
@@ -377,6 +379,7 @@ public class Controller {
 
         try {
             unzippedData = MessagingService.unzip(decryptedData);
+            new TextPrompt(this.outboxLabel.getScene().getWindow(), "Uspesno unzippovana poruka.");
         } catch(Exception e)
         {
             unzippedData = decryptedData;
@@ -414,9 +417,10 @@ public class Controller {
                 encryptMessageMsg.setText("Greska pri verifikaciji potpisa");
                 return;
             }
-            if(verified)
+            if(verified) {
+                new TextPrompt(this.outboxLabel.getScene().getWindow(), "Uspesno verifikovan potpis od " + verifyingKey.getUserIDs().next());
                 System.out.println("Potpis je verifikovan");
-            else
+            } else
                 System.out.println("Potpis nije verifikovan");
             try {
                 message = MessagingService.readSignedMessage(unzippedData);
@@ -425,16 +429,10 @@ public class Controller {
                 return;
             }
         } else {
-
             System.out.println("Poruka nije potpisana");
             message = unzippedData;
-            System.out.println(message[0]);
-            System.out.println(message[5]);
             if(message[0] == -53 && message[5] == -69)
             {
-
-                System.out.println("uso");
-
                 message = Arrays.copyOfRange(message, 8, message.length);
             }
         }
