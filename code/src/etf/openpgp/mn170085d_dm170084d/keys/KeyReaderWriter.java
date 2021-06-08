@@ -14,10 +14,16 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Klasa namenjena za osnovne manipulacije (citanje, upis, brisanje) nad kljucevima.
+ */
 public class KeyReaderWriter {
     private PGPSecretKeyRingCollection privateKeys;
     private PGPPublicKeyRingCollection publicKeys;
 
+    /**
+     * Citanje kljuceva, kako javnih tako i privatnih, iz odgovarajucih fajlova.
+     */
     public void readKeys() {
         try {
             File publicKeysFile = new File(Globals.publicKeysPath);
@@ -44,6 +50,11 @@ public class KeyReaderWriter {
         }
     }
 
+    /**
+     * Cuvanje privatnog prstena kljuceva lokalno i u fajl.
+     * @param secretKeyRing Prsten koji se cuva
+     * @return uspesnost operacije
+     */
     public boolean savePGPSecretKeyRing(PGPSecretKeyRing secretKeyRing) {
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(Globals.privateKeysPath))) {
             if (secretKeyRing != null) {
@@ -63,6 +74,11 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Cuvanje privatnog prstena kljuceva lokalno i u fajl.
+     * @param publicKeyRing Prsten koji se cuva
+     * @return uspesnost operacije.
+     */
     public boolean savePGPPublicKeyRing(PGPPublicKeyRing publicKeyRing) {
         try (OutputStream secretOut = new ArmoredOutputStream(new FileOutputStream(Globals.publicKeysPath))) {
             if (publicKeyRing != null) {
@@ -83,6 +99,10 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Dohvatanje privatnih kljuceva.
+     * @return lista privatnih kljuceva
+     */
     public ObservableList<KeyGuiVisualisation> getPrivateKeys() {
         ObservableList<KeyGuiVisualisation> privateKeysList = FXCollections.observableArrayList();
 
@@ -109,6 +129,10 @@ public class KeyReaderWriter {
         return privateKeysList;
     }
 
+    /**
+     * Dohvatanje javnih kljuceva.
+     * @return lista javnih kljuceva.
+     */
     public ObservableList<KeyGuiVisualisation> getPublicKeys() {
         ObservableList<KeyGuiVisualisation> publicKeysList = FXCollections.observableArrayList();
 
@@ -135,6 +159,11 @@ public class KeyReaderWriter {
         return publicKeysList;
     }
 
+    /**
+     * Uvoz privatnog kljuca sa lokacije.
+     * @param path
+     * @return uspesnost operacije.
+     */
     public boolean importPrivateKey(String path) {
         try (InputStream inputStream = new ArmoredInputStream(new FileInputStream(path))) {
             PGPSecretKeyRing secretKeyRing = new PGPSecretKeyRing(inputStream, new JcaKeyFingerprintCalculator());
@@ -148,6 +177,11 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Uvoz javnog kljuca sa lokacije.
+     * @param path
+     * @return uspesnost operacije.
+     */
     public boolean importPublicKey(String path) {
         try (InputStream inputStream = new ArmoredInputStream(new FileInputStream(path))) {
             PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing(inputStream, new JcaKeyFingerprintCalculator());
@@ -159,6 +193,13 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Izvoz privatnog kljuca na lokaciju.
+     * @param parentPath
+     * @param id ID kljuca koji se izvozi
+     * @param passphrase Sifra pod kojom se cuva taj kljuc
+     * @return uspesnost operacije.
+     */
     public boolean exportPrivateKey(String parentPath, long id, String passphrase) {
         PGPSecretKey subKey = this.getSecretSubKeyByID(id);
         if (subKey == null) {
@@ -186,6 +227,12 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Izvoz javnog kljuca na lokaciju
+     * @param parentPath
+     * @param id ID kljuca koji se izvozi
+     * @return uspesnost operacije.
+     */
     public boolean exportPublicKey(String parentPath, long id) {
         String fileName = "publicKeyExported_" + (new Date()).getTime() + ".asc";
         File exportFile = new File(parentPath, fileName);
@@ -202,13 +249,22 @@ public class KeyReaderWriter {
         return false;
     }
 
+    /**
+     * Otvaranje lokacije.
+     * @param path
+     * @throws IOException
+     */
     private void openFileLocation(String path) throws IOException {
         if (Desktop.isDesktopSupported()) {
-            //nemoj natalija
 //            Desktop.getDesktop().open(new File(path));
         }
     }
 
+    /**
+     * Dohvatanje prsetna javnih kljuceva na osnovu IDija (bilo master ili sub kljuca)
+     * @param idToGet
+     * @return prsten javnih kljuceva
+     */
     public PGPPublicKeyRing getPublicKeyRingForID(long idToGet) {
         // Check if it public key from other users
         Iterator<PGPPublicKeyRing> iterator = this.publicKeys.getKeyRings();
@@ -273,6 +329,11 @@ public class KeyReaderWriter {
         return null;
     }
 
+    /**
+     * Dohvatanje tajnog sub kljuca na osnovu IDija.
+     * @param idToGet
+     * @return tajni kljuc
+     */
     public PGPSecretKey getSecretSubKeyByID(long idToGet) {
         PGPSecretKeyRing secretKeyRing;
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
@@ -297,6 +358,11 @@ public class KeyReaderWriter {
         return null;
     }
 
+    /**
+     * Dohvatanje tajnog kljuca na osnovu IDija bilo master ili sub kljuca.
+     * @param idToGet
+     * @return tajni kljuc.
+     */
     public PGPSecretKey getAnySecretKeyById(long idToGet) {
         PGPSecretKeyRing secretKeyRing;
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
@@ -325,6 +391,11 @@ public class KeyReaderWriter {
 
     }
 
+    /**
+     * Dohvatanje tajnog master kljuca na osnovu IDija sub kljuca.
+     * @param idToGet ID sub kljuca.
+     * @return tajni master kljuc.
+     */
     public PGPSecretKey getSecretMasterKeyBySubKeyId(long idToGet) {
         PGPSecretKeyRing secretKeyRing;
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
@@ -350,6 +421,11 @@ public class KeyReaderWriter {
         return null;
     }
 
+    /**
+     * Dohvatanje tajnog master kljuca na osnovu IDija master kljuca.
+     * @param idToGet ID master kljuca
+     * @return tajni master kljuc.
+     */
     public PGPSecretKey getSecretMasterKeyByMasterKeyId(long idToGet) {
         PGPSecretKeyRing secretKeyRing;
         Iterator<PGPSecretKeyRing> iterator = this.privateKeys.getKeyRings();
@@ -368,6 +444,11 @@ public class KeyReaderWriter {
         return null;
     }
 
+    /**
+     * Dohvatanje tajnog prstena kljuceva na osnovu IDija.
+     * @param idToGet
+     * @return prsten tajnih kljuceva
+     */
     private PGPSecretKeyRing getSecretKeyRingForID(long idToGet) {
         PGPSecretKeyRing secretKeyRing = null;
         try {
@@ -379,10 +460,21 @@ public class KeyReaderWriter {
     }
 
 
+    /**
+     * Brisanje kljuca na osnovu IDija i sifre.
+     * @param idToDelete
+     * @param password
+     * @return uspesnost operacije
+     */
     public boolean deleteKey(long idToDelete, String password) {
         return password == null ? deletePublicKey(idToDelete) : deletePrivateKey(idToDelete, password);
     }
 
+    /**
+     * Brisanje javnog kljuca
+     * @param idToDelete
+     * @return uspesnost operacije
+     */
     private boolean deletePublicKey(long idToDelete) {
         PGPPublicKeyRing publicKeyRing = this.getPublicKeyRingForID(idToDelete);
         if (publicKeyRing == null)
@@ -393,6 +485,12 @@ public class KeyReaderWriter {
         return true;
     }
 
+    /**
+     * Brisanje privatnog kljuca
+     * @param idToDelete
+     * @param passphrase Sifra pod kojom se cuva kljuc.
+     * @return uspesnost operacije
+     */
     private boolean deletePrivateKey(long idToDelete, String passphrase) {
         PGPSecretKey subKey = this.getSecretSubKeyByID(idToDelete);
         if (subKey == null) {
@@ -415,6 +513,12 @@ public class KeyReaderWriter {
         return true;
     }
 
+    /**
+     * Provera da li sifra odgovara privatnom kljucu.
+     * @param subKey Privatni kljuc
+     * @param passphrase Sifra
+     * @return uspesnost operacije
+     */
     private boolean checkSubKeyWithPassphrase(PGPSecretKey subKey, String passphrase) {
         try {
             subKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(passphrase.toCharArray()));

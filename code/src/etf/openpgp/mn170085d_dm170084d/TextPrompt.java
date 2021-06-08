@@ -12,8 +12,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+/**
+ * Klasa zaduzena za prikaz pop-up prozora koji ume da prikaze tekst.
+ */
 public class TextPrompt {
 
+    /**
+     * Incijalizacija prozora uz pomoc teksta koji se prikazuje.
+     * @param owner
+     * @param text
+     */
     TextPrompt(Window owner, String text) {
         final Stage dialog = new Stage();
 

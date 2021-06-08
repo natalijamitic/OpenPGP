@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Startna tacka programa. Pokrece GUI Aplikaciju.
+ */
 public class Main extends Application {
 
     @Override
@@ -26,6 +29,10 @@ public class Main extends Application {
     }
 
 
+    /**
+     * Ulazna tacka.
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
+/**
+ * Klasa zaduzena za prikaz pop-up prozora koji ume da zahteva unos sifre.
+ */
 public class PasswordPrompt {
     private String result = "";
 
@@ -44,6 +47,10 @@ public class PasswordPrompt {
         result = textField.getText();
     }
 
+    /**
+     * Dohvatanje unete sifre.
+     * @return
+     */
     public String getResult() {
         return result;
     }

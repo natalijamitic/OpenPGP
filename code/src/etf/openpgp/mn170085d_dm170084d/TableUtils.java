@@ -6,19 +6,37 @@ import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 
+/**
+ * Klasa zaduzena za stilizovanje tabele.
+ */
 public class TableUtils {
 
 
+    /**
+     * Dodavanje hendlera za copy/paste
+     * @param table
+     */
     public static void installCopyPasteHandler(TableView<KeyGuiVisualisation> table) {
         table.setOnKeyPressed(new TableKeyEventHandler());
     }
 
+    /**
+     * Dodavanje menija na desni klik na polje tabele.
+     * @param table
+     */
     public static void installContextMenu(TableView<KeyGuiVisualisation> table){
        table.setOnMouseClicked(new TableMouseEventHandler());
     }
 
+    /**
+     * Handler za dogadjaje misa.
+     */
     public static class TableMouseEventHandler implements EventHandler<MouseEvent> {
 
+        /**
+         * Dodavanje menija prilikom desnog klika na polje tabele.
+         * @param mouseEvent
+         */
         public void handle(final MouseEvent mouseEvent) {
             if(mouseEvent.getButton() == MouseButton.SECONDARY) {
                 KeyGuiVisualisation key = (KeyGuiVisualisation) ((TableView<?>) mouseEvent.getSource()).getSelectionModel().getSelectedItem();
@@ -33,9 +51,16 @@ public class TableUtils {
         }
     }
 
+    /**
+     * Handler za dogadjaje tastature.
+     */
     public static class TableKeyEventHandler implements EventHandler<KeyEvent> {
         KeyCodeCombination copyKeyCodeCompination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
 
+        /**
+         * Dodavanje hendlera za precicu kopiranja.
+         * @param keyEvent
+         */
         public void handle(final KeyEvent keyEvent) {
             if (copyKeyCodeCompination.match(keyEvent)) {
                 if( keyEvent.getSource() instanceof TableView) {
@@ -48,6 +73,10 @@ public class TableUtils {
         }
     }
 
+    /**
+     * Logika za dohvatanje teksta iz tabele nad kojim se pozvala precica kopiranja.
+     * @param table
+     */
     public static void copySelectionToClipboard(TableView<?> table) {
         StringBuilder clipboardString = new StringBuilder();
         ObservableList<TablePosition> positionList = table.getSelectionModel().getSelectedCells();
@@ -78,6 +107,10 @@ public class TableUtils {
 
     }
 
+    /**
+     * Kopiranje teksta na sistemski clipboard.
+     * @param text
+     */
     public static void copyToSystemClipboard(String text) {
         final ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.putString(text);

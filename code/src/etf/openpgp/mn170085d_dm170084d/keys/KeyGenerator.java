@@ -15,11 +15,21 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.util.Date;
 
+/**
+ * Klasa zaduzena za kreiranje kljuceva.
+ */
 public class KeyGenerator {
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
 
+    /**
+     * Generisanje 2 para kljuceva (master + sub-key) koristeci RSA algoritam.
+     * @param identity Identitet osobe za koju se pravi par kljuceva.
+     * @param passphrase Sifra pod kojom se cuva par kljuceva.
+     * @param keySize Velicina kljuca koriscenog u RSA algoritmu.
+     * @return novonapravljeni tajni key ring
+     */
     public PGPSecretKeyRing generateRSAPGPSecretKeyRing(String identity, String passphrase, int keySize) {
         PGPSecretKeyRing secretKeyRing = null;
         try {
@@ -37,6 +47,14 @@ public class KeyGenerator {
         return secretKeyRing;
     }
 
+    /**
+     * Generisanje jednog para kljuceva RSA algoritmom.
+     * @param keySize Velicina kljuca koriscenog u RSA algoritmu.
+     * @param mode Mod moze biti za potpis i za enkripciju.
+     * @return vraca novokreirani par kljuceva
+     * @throws NoSuchAlgorithmException
+     * @throws PGPException
+     */
     private PGPKeyPair getRSAPGPKeyPair(int keySize, int mode) throws NoSuchAlgorithmException, PGPException {
         KeyPairGenerator rsaKPG = KeyPairGenerator.getInstance("RSA");
         rsaKPG.initialize(keySize);
@@ -47,6 +65,15 @@ public class KeyGenerator {
         return rsaPGPKeyPair;
     }
 
+    /**
+     * Pravi generator prstena kljuceva na osnovu master i sub kljuca
+     * @param master Master kljuc
+     * @param sub Sub kljuc
+     * @param identity Identitet korisnika za kog se pravi par kljuceva
+     * @param passphrase Sifra pod kojom se cuvaju kljucevi
+     * @return generator prstena kljuceva
+     * @throws PGPException
+     */
     private PGPKeyRingGenerator getPGPKeyRingGenerator(PGPKeyPair master, PGPKeyPair sub, String identity, String passphrase) throws PGPException {
         PGPDigestCalculator sha1Calc = new JcaPGPDigestCalculatorProviderBuilder().build().get(HashAlgorithmTags.SHA1);
         PGPKeyRingGenerator keyRingGen = new PGPKeyRingGenerator(

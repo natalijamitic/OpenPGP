@@ -27,6 +27,9 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.jcajce.JcePBESecretKeyDecryptorBuilder;
 
+/**
+ * Kontroler za GUI Aplikaciju.
+ */
 public class Controller {
     final String[] generationAlgorithms = {"RSA 1024", "RSA 2048", "RSA 4096"};
     final String[] simetricAlgorithms = {"3DES", "AES 128"};
@@ -68,6 +71,9 @@ public class Controller {
 
     private KeyHelper keyHelper;
 
+    /**
+     * Inicijalizacija GUI aplikacije.
+     */
     public void initialize() {
         // initialization here, if needed...
         System.out.println("init");
@@ -86,7 +92,9 @@ public class Controller {
         this.keyGenerationAlgorithms.setItems(FXCollections.observableArrayList(generationAlgorithms));
     }
 
-    // gets called for leaving + entering
+    /**
+     * Logika biranja tabova kako bi se znao trenutno aktivni.
+     */
     public void tabSelected() {
         tabEntered = !tabEntered;
         if (!tabEntered)            // if we are leaving tab we dont care
@@ -109,6 +117,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Inicijalizacija pregleda kljuceva.
+     */
     private void initializeKeyViewer() {
         this.privateKeysTable.getSelectionModel().setCellSelectionEnabled(true);
         this.publicKeysTable.getSelectionModel().setCellSelectionEnabled(true);
@@ -136,6 +147,9 @@ public class Controller {
     /**********************************************
      *                  KLJUCEVI                  *
      **********************************************/
+    /**
+     * Pregled kljuceva i privatnih i javnih.
+     */
     public void viewKeys() {
         initializeKeyViewer();
         if (keyHelper == null) {
@@ -146,6 +160,9 @@ public class Controller {
         this.publicKeysTable.setItems(keyHelper.getPublicKeys());
     }
 
+    /**
+     * Generisanje kljuca na osnovu unetih podataka. Poziva se odgovarajuca keyHelper funkcija.
+     */
     public void generateKey() {
         this.keyGenerationMsg.setText("Generise se...");
 
@@ -166,6 +183,9 @@ public class Controller {
         delay.play();
     }
 
+    /**
+     * Brisanje kljuca. Poziva se odgovarajuca keyHelper funkcija.
+     */
     public void deleteKey() {
         this.keyDeletionMsg.setText("Brise se...");
 
@@ -189,6 +209,9 @@ public class Controller {
     /**********************************************
      *                  UVOZ                      *
      **********************************************/
+    /**
+     * Prozor za biranje uvoznog fajla.
+     */
     public void selectImportFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Izaberite fajl za uvoz");
@@ -203,6 +226,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Uvoz kljuca. Poziva se odgovarajuca keyHelper funkcija.
+     */
     public void importKey() {
         this.importKeyLabel.setText("Uvozi se...");
 
@@ -227,6 +253,9 @@ public class Controller {
     /**********************************************
      *                  IZVOZ                     *
      **********************************************/
+    /**
+     * Prozor za biranje izvoznog fajla.
+     */
     public void selectExportFile() {
         System.out.println("select export file");
 
@@ -243,6 +272,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Izvoz kljuca. Poziva se odgovarajuca keyHelper funkcija.
+     */
     public void exportKey() {
         this.exportKeyLabel.setText("Izvozi se..");
 
@@ -266,6 +298,9 @@ public class Controller {
     /**********************************************
      *                  PRIJEM                    *
      **********************************************/
+    /**
+     * Prozor za biranje prijemne poruke.
+     */
     public void selectInboxMessage() {
         System.out.println("select inbox message");
 
@@ -282,11 +317,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Prozor za biranje lokacije dekriptovane poruke.
+     */
     public void selectDecryptedMessage() {
         System.out.println("select decrypt inbox message directory");
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Izaberite direktorijum za enkriptovanu poruku");
+        directoryChooser.setTitle("Izaberite direktorijum za dekriptovanu poruku");
         Stage stage = (Stage) anchorPaneReceiveMsg.getScene().getWindow();
         File file = directoryChooser.showDialog(stage);
         if (file != null) {
@@ -457,6 +495,9 @@ public class Controller {
 
     }
 
+    /**
+     * Unos sifre za dekriptovanje poruke.
+     */
     public void checkInboxMessagePrivateKey() {
         System.out.println("enter pass for decrypting inbox message");
         String privateKey = this.inboxMessagePrivateKey.getText();
@@ -474,6 +515,9 @@ public class Controller {
         delay2.play();
     }
 
+    /**
+     * Zatvaranje dijaloga za unos lozinke.
+     */
     public void closeInboxDialog() {
         this.inboxDialog.setVisible(false);
     }
@@ -482,6 +526,9 @@ public class Controller {
     /**********************************************
      *                  SLANJE                    *
      **********************************************/
+    /**
+     * Brisanje unetih podataka iz prozora za slanje poruke.
+     */
     private void clearSendScreen() {
         outboxMessagePath.clear();
         outboxLocationPath.clear();
@@ -569,11 +616,14 @@ public class Controller {
         System.out.println(srcPath + " " + dstPath + " " + isSigned + " " + signedKeyId + " " + signatureKeyPassword + " " + isEncrypted + " " + encryptionAlgo + " " + pubKeys + " " + isZipped + " " + isRadix);
     }
 
+    /**
+     * Prozor za biranje poruke koja se salje.
+     */
     public void selectOutboxMessage() {
         System.out.println("select outbox message");
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Izaberite prijemnu poruku za sifrovanje");
+        fileChooser.setTitle("Izaberite poruku za slanje.");
         Stage stage = (Stage) anchorPaneSendMsg.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
@@ -585,6 +635,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Prozor za biranje lokacije na koju se salje.
+     */
     public void selectOutboxLocation() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Izaberite direktorijum za slanje poruke");
@@ -603,10 +656,18 @@ public class Controller {
      *                  HELPERI                   *
      **********************************************/
 
+    /**
+     * Konverzija stringa u long.
+     * @param keyId
+     * @return Long vrednost stringa.
+     */
     private long stringKeyIdToLong(String keyId) {
         return Long.parseUnsignedLong(keyId, 16);
     }
 
+    /**
+     * Incijalizacija tabela - dodavanje hendlera.
+     */
     public void initializeApp() {
         TableUtils.installCopyPasteHandler(this.privateKeysTable);
         TableUtils.installCopyPasteHandler(this.publicKeysTable);
