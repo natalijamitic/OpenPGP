@@ -2,6 +2,7 @@ package etf.openpgp.mn170085d_dm170084d.messaging;
 
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.BCPGOutputStream;
+import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.PublicKeyDataDecryptorFactory;
@@ -14,6 +15,12 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class MessagingService {
+    /**
+     * Metoda zipuje podatke koji joj se proslede
+     * @param data niz bajtova koji se zipuju
+     * @return niz bajtova koji predstavljaju zipovane podatke
+     * @throws IOException
+     */
     public static byte[] zip(byte[] data) throws IOException {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator cdg = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
@@ -26,6 +33,12 @@ public class MessagingService {
         return byteOutputStream.toByteArray();
     }
 
+    /**
+     * Metoda unzipuje podatke koji joj se proslede
+     * @param data niz bajtova koji se unzipuju
+     * @return niz bajtova koji predstavljaju unzipovane podatke
+     * @throws Exception
+     */
     public static byte[] unzip(byte[] data) throws Exception {
         JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(data);
         Object o = objectFactory.nextObject();
@@ -36,6 +49,12 @@ public class MessagingService {
         return cdata.getDataStream().readAllBytes();
     }
 
+    /**
+     * Metoda konvertuje podatke u radix64 format
+     * @param data niz bajtova koji se konvertuju u radix64 format
+     * @return niz bajtova koji predstavljaju podatke enkodirane u radix64 formatu
+     * @throws IOException
+     */
     public static byte[] encodeArmoredStream(byte[] data) throws IOException {
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
         ArmoredOutputStream armoredOutputStream = new ArmoredOutputStream(byteArray);
@@ -45,20 +64,24 @@ public class MessagingService {
         return byteArray.toByteArray();
     }
 
+    /**
+     * Metoda koji dekoduje podatke iz radix64 formata
+     * @param data niz bajtova koji se dekoduju
+     * @return niz bajtova koji predstavljaju podatke dekodovane iz radix64 formata
+     * @throws IOException
+     */
     public static byte[] decodeArmoredStream(byte[] data) throws IOException {
         return PGPUtil.getDecoderStream(new ByteArrayInputStream(data)).readAllBytes();
     }
 
-    public static byte[] encodeBase64(byte[] data)
-    {
-        return Base64.encode(data);
-    }
-
-    public static byte[] decodeBase64(byte[] data)
-    {
-        return Base64.decode(data);
-    }
-
+    /**
+     * Metoda koja enkriptuje podatke i sifruje sesijski kljuc javnim kljucem primaoca
+     * @param data podaci koji se enkriptuju
+     * @param publicKey javni kljuc primaoca poruke
+     * @param algorithm SymmetricKeyAlgorithmTags vrednost koja oznacava simetricni algoritam kojim se enkriptuje poruka
+     * @return niz bajtova koji predstavljaju enkriptovanu poruku
+     * @throws Exception
+     */
     public static byte[] encrypt(byte[] data, PGPPublicKey publicKey, int algorithm) throws Exception {
         OutputStream outputStream = new ByteArrayOutputStream();
         if(publicKey == null)
@@ -78,6 +101,11 @@ public class MessagingService {
         return ((ByteArrayOutputStream)outputStream).toByteArray();
     }
 
+    /**
+     * Metoda koja proverava da li niz bajtova predstavlja enkriptovanu poruku
+     * @param data niz bajtova koji se proveravaju
+     * @return boolean koji oznacava da li bajtovi predstavljaju enkriptovane podatke ili ne
+     */
     public static boolean isDataEncrypted(byte[] data) {
         try {
             JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(data);
@@ -93,6 +121,13 @@ public class MessagingService {
         }
     }
 
+    /**
+     * Metoda koja dekriptuje podatke
+     * @param data podaci koji se dekriptuju
+     * @param privateKey privatni kljuc primaoca kojim se desifruje sesijski kljuc
+     * @return niz bajtova koji predstavljaju dekriptovane podatke
+     * @throws Exception
+     */
     public static byte[] decrypt(byte[] data, PGPPrivateKey privateKey) throws Exception {
         JcaPGPObjectFactory objectFactory = new JcaPGPObjectFactory(data);
         Object o = objectFactory.nextObject();
@@ -110,6 +145,15 @@ public class MessagingService {
         throw new Exception("Provided data is not encrypted");
     }
 
+    /**
+     * Metoda koja potpisuje podatke privatnim kljucem posiljaoca
+     * @param data podaci koji se potpisuju
+     * @param signingKey privatni kljuc posiljaoca kojim se potpisuju podaci
+     * @param signingAlg algoritam kojim se potpisuju podaci
+     * @return niz bajtova koji predstavljaju potpisanu poruku
+     * @throws PGPException
+     * @throws IOException
+     */
     public static byte[] sign(byte[] data, PGPPrivateKey signingKey, int signingAlg) throws PGPException, IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         BCPGOutputStream bcpgos = new BCPGOutputStream(byteStream);
@@ -134,6 +178,11 @@ public class MessagingService {
         return byteStream.toByteArray();
     }
 
+    /**
+     * Metoda koja proverava da li su podaci potpisani
+     * @param data podaci za koje se proverava da li su potpisani
+     * @return boolean koji predstavlja da li su podaci potpisani ili ne
+     */
     public static boolean isDataSigned(byte[] data)
     {
         try {
@@ -149,6 +198,14 @@ public class MessagingService {
         }
     }
 
+    /**
+     * Metoda koja verifikuje potpis poruke
+     * @param pgpSignedData potpisani podaci
+     * @param verifyingKey javni kljuc posiljaoca poruke kojim se proverava njegov potpis
+     * @return boolean koji predstavlja da li je potpis verifikovan ili ne
+     * @throws IOException
+     * @throws PGPException
+     */
     public static boolean verifySignature(byte[] pgpSignedData, PGPPublicKey verifyingKey) throws IOException, PGPException {
         JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(pgpSignedData);
 

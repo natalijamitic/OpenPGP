@@ -298,9 +298,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Metoda koja predstavlja hendler koji se zove prilikom prijema poruke.
+     * Hendler dohvata poruku koja je enkriptovana, ucitava fajl, vrsi odgovarajuce
+     * provere da li podaci treba da se dekriptuju, dekoduju iz radix64 itd. i cuva
+     * dekriptovanu poruku. Ukoliko ne uspe u tome ispisuje odgovarajucu poruku o gresci.
+     */
     public void receiveMessage() {
-        String password = inboxMessagePrivateKey.getText();
-
         String srcPath = this.inboxMessagePath.getText();
         FileInputStream fileStream = null;
         byte[] data = null;
@@ -491,6 +495,11 @@ public class Controller {
         radixFlag.setSelected(false);
     }
 
+    /**
+     * Metoda koja predstavlja hendler koji se poziva kada korisnik salje poruku.
+     * Hendler dohvata sve neophodne podatke iz forme, verifikuje ih i salje poruku
+     * ako su ispravni. Ako nisu ispravni ispisuje poruku o odgovarajucoj gresci.
+     */
     public void sendMessage() {
         //srcPath, dstPath, isSigned, signingKey
         String srcPath = outboxMessagePath.getText();
