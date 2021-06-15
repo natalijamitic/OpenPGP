@@ -343,6 +343,7 @@ public class Controller {
      * dekriptovanu poruku. Ukoliko ne uspe u tome ispisuje odgovarajucu poruku o gresci.
      */
     public void receiveMessage() {
+        encryptMessageMsg.setText("");
         String srcPath = this.inboxMessagePath.getText();
         FileInputStream fileStream = null;
         byte[] data = null;
@@ -366,9 +367,22 @@ public class Controller {
 
         try {
             decodedRadix = MessagingService.decodeArmoredStream(data);
+            System.out.println("uspeh1");
+            if (decodedRadix.length == 0) {
+                decodedRadix = data;
+            }
+            for (int i = 0; i < decodedRadix.length; i++) {
+                System.out.println(decodedRadix[i]);
+            }
         } catch(Exception e)
         {
             decodedRadix = data;
+
+            System.out.println("neuspeh1");
+
+            for (int i = 0; i < decodedRadix.length; i++) {
+                System.out.println(decodedRadix[i]);
+            }
         }
 
         if(MessagingService.isDataEncrypted(decodedRadix))
@@ -416,6 +430,7 @@ public class Controller {
             }
         } else
         {
+            System.out.println("neuspeh2");
             decryptedData = decodedRadix;
         }
 
@@ -425,6 +440,8 @@ public class Controller {
         } catch(Exception e)
         {
             unzippedData = decryptedData;
+
+            System.out.println("neuspeh3");
         }
 
         if(MessagingService.isDataSigned(unzippedData))
@@ -473,7 +490,7 @@ public class Controller {
         } else {
             System.out.println("Poruka nije potpisana");
             message = unzippedData;
-            if(message[0] == -53 && message[5] == -69)
+            if(message.length > 6 && message[0] == -53 && message[5] == -69)
             {
                 message = Arrays.copyOfRange(message, 8, message.length);
             }
@@ -565,6 +582,10 @@ public class Controller {
             signedKeyId = this.stringKeyIdToLong(signatureKeyId.getText());
             // IZMENA
             PGPSecretKey secretKey = this.keyHelper.getMasterSecreyKeyBySubKeyId(signedKeyId);// this.keyHelper.getSecretKeyById(signedKeyId);
+            if (secretKey == null) {
+                outboxLabel.setText("Ne postoji takav privatni kljuc.");
+                return;
+            }
             try {
                 signingKey = secretKey.extractPrivateKey(new JcePBESecretKeyDecryptorBuilder().setProvider("BC").build(signatureKeyPassword.toCharArray()));
                 signingAlgorithm = secretKey.getPublicKey().getAlgorithm();
